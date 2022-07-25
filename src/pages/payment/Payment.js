@@ -1,13 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux/es/exports";
 import LocalizedStrings from "react-localization";
-import "./purchase.css";
+import "./payment.css";
 import { useFormik } from "formik";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
 import { useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
-export default function Purchase() {
+export default function Payment() {
   let lang = useSelector((state) => state.lang.lang);
   let [error, setError] = useState("");
   let [paymentState, setPaymentState] = useState("");
@@ -48,6 +48,7 @@ export default function Purchase() {
       failed: "Failed,Please try again",
       success: "Processing is done, congratulation!",
       cardError: "You should enter card id!",
+      card: "Payment Card",
     },
     ar: {
       title: "عملية الشراء",
@@ -69,6 +70,7 @@ export default function Purchase() {
       failed: "فشلت العملية , برجاء المحاولة مره اخري",
       success: "انتهت عملية الشراء , تهانينا!",
       cardError: "يجب عليك ادخال رقم الكارت!",
+      card: "كارت الدفع",
     },
   });
   formStrings.setLanguage(lang);
@@ -177,7 +179,7 @@ export default function Purchase() {
       dir={lang == "en" ? "ltr" : "rtl"}
     >
       <div className="row">
-        <div className="col-md-6 purchase__left">
+        <div className="col-md-6 purchase__left order-md-1 order-2">
           <h2 className="payment__title">{formStrings.title}</h2>
           <form
             className="my-5"
@@ -254,7 +256,10 @@ export default function Purchase() {
                 </small>
               )}
             </div>
-            <div className="my-5 w-75 border border-warning p-3">
+            <div className="mb-4 w-75  ">
+              <label htmlFor="email" className="purchase__form-label mb-4">
+                {formStrings.card}
+              </label>
               <CardElement
                 onChange={(e) => handleCardChange(e)}
                 options={{
@@ -271,10 +276,10 @@ export default function Purchase() {
               <small className="text-danger fs-5 d-block">*{error}</small>
             )}
 
-            <div className="mt-4">
+            <div className="mt-5">
               <button
                 type="submit"
-                className="btn btn-primary fs-4 py-2 px-5"
+                className="btn btn-primary fs-4 py-2 px-5 primaryBtn"
                 disabled={Object.keys(formik.errors).length || error}
               >
                 {formStrings.buy}
@@ -290,9 +295,9 @@ export default function Purchase() {
             </div>
           </form>
         </div>
-        <div className="col-md-6 purchase__right d-flex jusityf-content-center align-items-center">
+        <div className="col-md-6 purchase__right order-md-2 order-1 d-flex jusityf-content-center align-items-center">
           <img
-            src={require("./../../assets/payment/payment.png")}
+            src={require("./../../assets/payment/payment3.png")}
             className="purchase__right-img"
           />
         </div>
