@@ -1,0 +1,51 @@
+.customNav {
+  background-color: var(--mainColor);
+  color: var(--whiteColor);
+  padding: 0.8rem 0;
+}
+.customNav ul {
+  padding: 0;
+  margin: 0%;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  /* justify-content: space-around; */
+}
+.customNav ul li {
+  font-size: 1.6rem;
+
+  padding: 0.2rem;
+  transition: all 0.2s ease-in-out;
+}
+.customNav ul li:hover {
+  cursor: pointer;
+}
+.customNav ul li:not(:first-child) {
+  padding: 0 0.5rem;
+}
+.customLink:link,
+.customLink:visited {
+  text-decoration: none;
+  color: var(--whiteColor);
+  border: 0.1rem solid transparent;
+  border-radius: 0.1rem;
+  transition: all 0.2s ease-in-out;
+  padding: 0.5rem 0.2rem;
+}
+
+.customLink:hover,
+.customLink:active {
+  border: 0.1rem solid var(--whiteColor);
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--whiteColor);
+}
+i {
+  color: var(--whiteColor);
+  padding: 0 0.5rem;
+  margin-left: 0.4rem;
+}
+
+.arabicFont {
+  font-family: Almarai;
+}

@@ -1,0 +1,43 @@
+.sidebar__mainItem {
+  border-top: 0.1rem solid rgba(0, 0, 0, 0.236);
+  overflow-x: hidden;
+}
+.sidebar__mainItem-title {
+  font-size: 1.8rem;
+  text-transform: capitalize;
+  text-align: center;
+  font-weight: bold;
+  color: var(--mainColor);
+  padding: 2rem 0;
+}
+
+.sidebar__mainItem ul {
+  padding: 0;
+  margin: 0;
+}
+.sidebar__mainItem ul li a p {
+  padding: 0;
+  margin: 0;
+  font-size: 1.55rem;
+}
+.sidebar__mainItem ul li a i {
+  font-size: 1.6rem;
+  color: var(--mainColor);
+  margin-left: auto;
+}
+.sidebar__mainItem ul li a:link,
+.sidebar__mainItem ul li a:visited {
+  text-decoration: none;
+  color: var(--mainColor);
+  text-transform: capitalize;
+  padding: 1rem 2rem;
+  text-align: center;
+  transition: all 0.25s ease;
+}
+.sidebar__mainItem ul li a:hover,
+.sidebar__mainItem ul li a:active {
+  background-color: var(--secondaryWhiteColor);
+}
+.sidebar__mainItem ul li a:last-child {
+  margin-bottom: 1rem;
+}

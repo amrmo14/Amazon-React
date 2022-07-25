@@ -1,0 +1,62 @@
+.customBigCart {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 2rem;
+  padding-bottom: 1rem;
+  overflow: hidden;
+  height: 44rem;
+  /* background-color: var(--whiteColor); */
+  transition: all 0.3s ease-in;
+}
+/* .customBigCart:hover {
+  background-color: var(--secondaryWhiteColor);
+} */
+.customBigCart__head-en,
+.customBigCart__head-ar {
+  font-weight: 900;
+  font-size: 2.3rem;
+  margin-bottom: auto;
+}
+.customBigCart__head-en {
+  font-family: "Open Sans";
+}
+.customBigCart__head-ar {
+  font-family: "Almarai";
+}
+.customBigCart__en,
+.customBigCart__ar {
+  display: inline-block;
+  font-weight: 600;
+  font-size: 2.3rem;
+  color: var(--orangeColor);
+}
+.customBigCart__en {
+  font-family: "Open Sans";
+}
+.customBigCart__ar {
+  font-family: "Almarai";
+}
+.img__link {
+  height: 30rem;
+  width: 100%;
+  overflow: hidden;
+}
+.customBigCart img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: all 0.3s ease;
+
+  display: block;
+}
+.customBigCart img:hover {
+  opacity: 0.5;
+}
+.customBigCart a:link,
+.customBigCart a:visited {
+  font-size: 1.4rem;
+  margin: 1rem 0;
+}

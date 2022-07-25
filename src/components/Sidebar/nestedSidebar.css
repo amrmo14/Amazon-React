@@ -1,0 +1,43 @@
+html {
+  font-size: 10px;
+}
+.nestedSidebar {
+  background-color: var(--secondaryWhiteColor);
+  width: 25rem;
+  /* height: 50rem; */
+  position: absolute;
+  top: 5rem;
+  left: 23%;
+  transition: all 0.4s ease;
+}
+
+.sidebar__mainItem ul {
+  padding: 0;
+  margin: 0;
+}
+.sidebar__mainItem ul li .customLink p {
+  padding: 0;
+  margin: 0;
+  font-size: 1.55rem;
+}
+.sidebar__mainItem ul li .customLink i {
+  font-size: 1.6rem;
+  color: var(--mainColor);
+  margin-left: auto;
+}
+.sidebar__mainItem ul li .customLink:link,
+.sidebar__mainItem ul li .customLink:visited {
+  text-decoration: none;
+  color: var(--mainColor);
+  text-transform: capitalize;
+  padding: 1rem 2rem;
+  text-align: center;
+  transition: all 0.25s ease;
+}
+.sidebar__mainItem ul li .customLink:hover,
+.sidebar__mainItem ul li .customLink:active {
+  background-color: var(--secondaryWhiteColor);
+}
+.sidebar__mainItem ul li .customLink:last-child {
+  margin-bottom: 1rem;
+}

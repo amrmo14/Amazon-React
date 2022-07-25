@@ -1,0 +1,40 @@
+.register {
+
+    justify-content: center;
+  }
+  .register h2{
+    text-align: left;
+    font-size: 30px;
+    padding-bottom:20px ;
+  } 
+  .register__container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background-color: rgb(173, 171, 171);
+    padding: 30px;
+    border-radius: 5px;
+  }
+  .register__textBox {
+    padding: 10px;
+    font-size: 12px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: none;
+  }
+  .register__btn {
+    padding: 10px;
+    font-size: 18px;
+    margin-bottom: 10px;
+    border: none;
+    color: white;
+    background-color: rgb(226, 143, 18);
+    border-radius: 5px;
+  }
+  .register__google {
+    background-color: #eff1f3;
+    color: black;
+  }
+  .register div {
+    margin-top: 7px;
+  }
