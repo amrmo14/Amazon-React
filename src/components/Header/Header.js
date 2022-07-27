@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import lang__action from "./../../store/actions/lang";
 import { useDispatch } from "react-redux/es/exports";
@@ -100,9 +100,8 @@ export default function Header() {
   let [selectedCat, setSelectedCat] = useState("");
   let [searchValue, setSearchValue] = useState("");
   let dispatch = useDispatch();
-  let lang = useSelector((select) => select.lang.lang);
-  let cart = useSelector((select) => select.cart);
-  console.log(lang);
+  let lang = useSelector((state) => state.lang.lang);
+  let cart = useSelector((state) => state.cart);
   let handleCategory = (e) => {
     setSelectedCat(e.target.value);
   };
@@ -166,7 +165,9 @@ export default function Header() {
               {lang == "en" ? "Cart" : "العربــة"}
             </p>
             <div className="header__cart-box position-relative">
-              <p className="header__cart-box-number">{cart.length}</p>
+              <p className="header__cart-box-number">
+                {cart.length ? cart.length : "0"}
+              </p>
               <i className="fa-solid fa-cart-shopping"></i>
             </div>
           </div>

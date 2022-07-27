@@ -1,0 +1,48 @@
+.seller_addProduct {
+  padding: 4rem 1rem;
+  background-color: var(--whiteColor);
+}
+.seller_addProduct-en {
+  font-family: "Open Sans";
+}
+.seller_addProduct-ar {
+  font-family: "Almarai";
+}
+.english__right-img,
+.arabic__right-img {
+  width: 70rem;
+  height: auto;
+}
+.seller__addProduct-title {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+}
+.english__label,
+.arabic__label {
+  font-size: 1.9rem;
+  font-weight: lighter !important;
+  display: block;
+  color: var(--mainColor);
+  /* opacity: 0.8; */
+}
+
+.seller__addProduct-input {
+  padding: 0.5rem 1rem !important;
+  font-size: 1.6rem !important;
+  display: inline-block;
+}
+.seller__addProduct-btn {
+  font-size: 1.5rem;
+  border: none !important;
+  border-radius: 2rem !important;
+  padding: 0.5rem 4rem !important;
+  background-color: var(--mainColor) !important;
+  color: var(--whiteColor);
+  margin-top: 7rem !important;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.seller__addProduct-btn:hover {
+  color: var(--mainColor);
+  background-color: var(--whiteColor);
+}

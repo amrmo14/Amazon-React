@@ -14,6 +14,7 @@ import Cart from "./pages/cart/Cart";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import Payment from "./pages/payment/Payment";
+import AddProduct from "./pages/seller_addProduct/AddProduct";
 let stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 function App() {
   // let dispatch = useDispatch();
@@ -36,6 +37,7 @@ function App() {
               <Route path="/electronics/:id" component={ProductDetails} exact />
               <Route path="/cart" exact component={Cart} />
               <Route path="/payment/:id" exact component={Payment} />
+              <Route path="/seller/:id" exact component={AddProduct} />
               <Route path="/" component={Home} exect />
             </Switch>
           </div>

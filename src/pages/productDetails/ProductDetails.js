@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, useParams, useHistory } from "react-router-dom";
 import LocalizedStrings from "react-localization";
 import addToCart_action from "./../../store/actions/cart";
+import currencyFormat from "./../../components/handleMoney";
 import "./productDetails.css";
 export default function ProductDetails() {
   let params = useParams();
@@ -52,7 +53,7 @@ export default function ProductDetails() {
       price: 6599,
       quantity: 5,
       discount: 2,
-      category: "الالكترونيات",
+      category: "electronics",
       imgs: [
         require("./../../assets/details/1.jpg"),
         require("./../../assets/details/2.jpg"),
@@ -101,9 +102,37 @@ export default function ProductDetails() {
   let [quantity, setQuantity] = useState(1);
   let [error, setError] = useState("");
   let space = "  ";
+  //HANDLE: Delivery Date
   let dateNow = new Date();
   dateNow.setDate(dateNow.getDate() + 3);
+  let months = [
+    "يناير",
+    "فبراير",
+    "مارس",
+    "إبريل",
+    "مايو",
+    "يونيو",
+    "يوليو",
+    "أغسطس",
+    "سبتمبر",
+    "أكتوبر",
+    "نوفمبر",
+    "ديسمبر",
+  ];
 
+  let days = [
+    "اﻷحد",
+    "اﻷثنين",
+    "الثلاثاء",
+    "اﻷربعاء",
+    "الخميس",
+    "الجمعة",
+    "السبت",
+  ];
+  let month = months[new Date().getMonth()];
+  let day = days[new Date().getDay() + 3];
+  console.log(month, day);
+  //---------------------------------------
   let handleMouseOver = (e) => {
     if (e.target.src) {
       activeImg.current.src = e.target.src;
@@ -122,7 +151,7 @@ export default function ProductDetails() {
       dispatch(
         addToCart_action({
           product,
-          quantity,
+          available_quantity: quantity,
         })
       );
     } else {
@@ -132,21 +161,12 @@ export default function ProductDetails() {
         setError("");
       }, 3000);
     }
-    // dispatch(
-    //   addToCart_action({
-    //     product,
-    //     quantity,
-    //   })
-    // );
-    // console.log(cart);
   };
   let handleBuy = () => {
     // history.replace(`./payment/${product.en.id}?quantity=${quantity}`);
     window.location.replace(`/payment/${product.en.id}?quantity=${quantity}`);
   };
-  function currencyFormat(num) {
-    return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-  }
+
   pageData.setLanguage(lang);
   return (
     <>
@@ -346,7 +366,15 @@ export default function ProductDetails() {
                 <p className="proessing__delivery">
                   {lang == "en" ? "Deliver" : "التوصيل:"}
                   {space}
-                  <span>{dateNow.toDateString()}</span>
+                  {lang == "en" ? (
+                    <span>{dateNow.toDateString()}</span>
+                  ) : (
+                    <span>
+                      {day} {dateNow.getDate()}
+                      {month} {dateNow.getFullYear()}
+                      {}
+                    </span>
+                  )}
                 </p>
                 <div className="processing__quantityBox mb-5">
                   <p className="m-0">{pageData.quantity}</p>
