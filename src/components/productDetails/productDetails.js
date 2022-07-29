@@ -84,9 +84,6 @@ const ProductDetails = (props) => {
                 alert(err)
             }
 
-
-
-
             setShow(true)
             setTimeout(()=>setShow(false), 1500)
 

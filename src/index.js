@@ -5,11 +5,18 @@ import App from "./App";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Provider } from "react-redux";
 import store from "./store/store/store";
+import { StateProvider } from "./components/context/stateProvider";
+import reducer,{ initialState } from "./store/reducers/basketReducer";
+
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
   <Provider store={store}>
+    <StateProvider initialState={initialState} reducer={reducer} >
+
     <App />
+    </StateProvider>
   </Provider>
   // </React.StrictMode>
 );

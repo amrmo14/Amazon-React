@@ -15,6 +15,7 @@ import { UserProvider } from "./components/context/userContext";
 import Register from "./components/Register/Register";
 import Cart from "./components/Cart/Cart";
 import { CartContext, CartProvider } from "./components/context/cartContext";
+import Checkout from "./components/checkout/checkout";
 function App() {
   let dispatch = useDispatch();
   let [lang, setLang] = useState("en");
@@ -35,6 +36,8 @@ function App() {
         <Navbar />
         <div className="container-fluid  appContainer">
           <Switch>
+        
+          <Route exact path="/checkout" component={Checkout}/>
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
           <Route path="/cart" exact component={Cart}  />

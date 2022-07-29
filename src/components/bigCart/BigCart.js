@@ -2,11 +2,30 @@ import React from "react";
 import { useSelector } from "react-redux/es/exports";
 import { Link } from "react-router-dom";
 import "./bigCart.css";
+import { useStateValue } from "../context/stateProvider";
+
+
 export default function BigCart(props) {
-  let { product } = props;
+  let { product ,id,title,image,price} = props;
   let prodImg = product.image;
   let lang = useSelector((select) => select.lang.lang);
   console.log(lang);
+
+
+  const [{basket},dispatch]=useStateValue();
+  console.log("this is basket", basket)
+  const addToBasket =()=>{
+    dispatch({
+      type:'ADD_TO_BASKET',
+      item:{
+        id,
+        title,
+        image,
+        price
+    
+      }
+    })
+  }
   return (
     <>
       <div className='col-3 mt-4' dir={lang == "en" ? "ltr" : "rtl"}>
@@ -35,12 +54,21 @@ export default function BigCart(props) {
             </div>
           </div>
           <div className="a-cardui-footer">
-            <a
+            {/* <a
               className={lang == "en" ? "customBigCart__en" : "customBigCart__ar"}
               href={product.path}
             >
               {lang == "en" ? "Shop now" : "تسوق الان"}
-            </a>
+            </a> */}
+            <button
+              className={lang == "en" ? "customBigCart__en" : "customBigCart__ar"}
+              onClick={addToBasket}
+              
+            >
+              {lang == "en" ? "Add To Basket" : " أضف الى السلة "}
+            </button>
+            
+            
           </div>
         </div>
       </div>

@@ -8,6 +8,7 @@ import "./header.css";
 import { UserContext } from "../context/userContext";
 import { CartContext } from "../context/cartContext";
 import { useHistory } from "react-router-dom";
+import { useStateValue } from "../context/stateProvider";
 export default function Header() {
   const {isUser,setIsUser}=useContext(UserContext)
   const navigate = useHistory();
@@ -118,6 +119,9 @@ export default function Header() {
   let handleLang = (e) => {
     dispatch(lang__action(e.target.value));
   };
+
+  const [{basket},dispatchCartNumber] = useStateValue();
+
   return (
     <>
       <div
@@ -167,11 +171,11 @@ export default function Header() {
           </option>
           <option value="ar">العربيــة - AR</option>
         </select>
-        <Link to="/cart" className="cart__link">
+        <Link to="/checkout" className="cart__link">
           <div className="header__cart mx-4 d-flex align-items-center">
             <p className="m-0">{lang == "en" ? "Cart" : "العربــة"}</p>
             <div className="header__cart-box position-relative">
-              <p className="header__cart-box-number">{cart.length}</p>
+              <p className="header__cart-box-number">{basket.length}</p>
               <i class="fa-solid fa-cart-shopping"></i>
             </div>
           </div>
