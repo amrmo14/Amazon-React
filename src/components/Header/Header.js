@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import lang__action from "./../../store/actions/lang";
 import { useDispatch } from "react-redux/es/exports";
 import { useSelector } from "react-redux/es/exports";
+import { getSeller } from "../../firebase/seller/sellers";
+import logging_action from "./../../store/actions/logging";
 import "./header.css";
 export default function Header() {
   let [category, setCategory] = useState({
@@ -111,6 +113,17 @@ export default function Header() {
   let handleLang = (e) => {
     dispatch(lang__action(e.target.value));
   };
+  let [user, setUser] = useState({});
+  let IS_LOGGED = useSelector((state) => state.isLogged);
+  useEffect(() => {
+    let user = localStorage.getItem("userId");
+    if (user) {
+      getSeller(user).then((data) => {
+        setUser(data);
+        dispatch(logging_action(true));
+      });
+    }
+  }, [IS_LOGGED]);
   return (
     <>
       <div
@@ -172,9 +185,34 @@ export default function Header() {
             </div>
           </div>
         </Link>
-        <button className="header__loginBtn">
-          {lang == "en" ? "Login" : "تسجيل الدخول"}
-        </button>
+        {/* {!IS_LOGGED ? (
+          <button className="header__loginBtn">
+            <Link to="/login" className="header__loginBtn-link">
+              {lang == "en" ? "Login" : "تسجيل الدخول"}
+            </Link>
+          </button>
+        ) : (
+          <button className="header__loginBtn">
+            <Link to="/sellerDashboard" className="header__loginBtn-link">
+              {lang == "en" ? "Welcome " : " مرحبا "}
+              <span>{user.name}</span>
+            </Link>
+          </button>
+        )} */}
+        {IS_LOGGED ? (
+          <button className="header__loginBtn">
+            <Link to="/sellerDashboard" className="header__loginBtn-link">
+              {lang == "en" ? "Welcome " : " مرحبا "}
+              <span>{user.name}</span>
+            </Link>
+          </button>
+        ) : (
+          <button className="header__loginBtn">
+            <Link to="/login" className="header__loginBtn-link">
+              {lang == "en" ? "Login" : "تسجيل الدخول"}
+            </Link>
+          </button>
+        )}
       </div>
     </>
   );

@@ -126,3 +126,11 @@
   outline: none;
   font-weight: 600;
 }
+.header__loginBtn-link {
+  color: white;
+  text-decoration: none;
+}
+.header__loginBtn-link:hover {
+  color: white;
+  text-decoration: none;
+}

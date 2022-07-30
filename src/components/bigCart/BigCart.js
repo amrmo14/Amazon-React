@@ -6,7 +6,6 @@ export default function BigCart(props) {
   let { product } = props;
   let prodImg = product.image;
   let lang = useSelector((select) => select.lang.lang);
-  console.log(lang);
   return (
     <>
       <div className="col-md customBigCart " dir={lang == "en" ? "ltr" : "rtl"}>

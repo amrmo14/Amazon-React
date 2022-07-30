@@ -12,7 +12,6 @@ import "./navbar.css";
 export default function Navbar() {
   let { isOpen } = useSelector((state) => state.toggleNestedSidebar);
   let { lang } = useSelector((state) => state.lang);
-  console.log(lang);
   let dispatch = useDispatch();
 
   // const [navbar, setNavbar] = useState({

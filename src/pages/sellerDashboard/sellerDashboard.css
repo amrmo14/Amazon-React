@@ -1,0 +1,31 @@
+.sellerDashboard {
+  background-color: var(--whiteColor);
+  padding: 10rem 0;
+}
+.dashboard__right img {
+  width: 100%;
+}
+.dashboard__ar {
+  font-family: "Almarai";
+}
+.dashboard__en {
+  font-family: "Open sans";
+}
+.dashboard__left-link {
+  color: var(--mainColor);
+}
+.dashboard__left-btn {
+  padding: 1rem 3rem;
+  background-color: var(--whiteColor);
+  font-size: 2rem;
+  border: 0.3rem solid var(--mainColor);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin: 1rem 0;
+  display: inline-block;
+  width: 25rem;
+}
+.dashboard__left-btn:hover {
+  border-color: transparent;
+}
