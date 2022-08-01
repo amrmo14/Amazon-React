@@ -9,7 +9,7 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
-import { db, auth } from "./../config";
+import { db, auth } from "./../../components/firebase";
 import {
   createUserWithEmailAndPassword,
   signOut,

@@ -1,24 +1,68 @@
 import React from "react";
-<<<<<<< HEAD
-import { useState,useContext,useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import BigCart from "../../components/bigCart/BigCart";
 import { CartContext } from "../../components/context/cartContext";
 import Slider from "../../components/Slider/Slider";
 import "./home.css";
-import { db} from '../../components/firebase'
-import { collection, query, orderBy, onSnapshot, doc, getDocs } from "firebase/firestore"
+import { db } from '../../components/firebase'
+import { collection, query, orderBy, onSnapshot, doc, getDocs } from "firebase/firestore";
 import { UserContext } from "../../components/context/userContext";
 
-=======
-import { useState } from "react";
-import BigCart from "../../components/bigCart/BigCart";
-import Slider from "../../components/Slider/Slider";
 import MidCart from "../../components/midCart/MidCart";
+
 import Footer from "./../../components/Footer/Footer";
 import "./home.css";
 import SmallCart from "../../components/smallCart/SmallCart";
->>>>>>> omar
+
 export default function Home() {
+  const { cart, setCart } = useContext(CartContext)
+  const { isUser, userId, setUserId, setIsUser } = useContext(UserContext);
+  const [user, setUser] = useState({})
+
+
+  const fetchcart = async () => {
+    if (isUser) {
+      const userDocRef = doc(db, 'users', userId)
+      onSnapshot(userDocRef, (docc) => {
+
+        console.log("home")
+        setCart([...docc.data().cart]
+        )
+      })
+    }
+    else {
+      setCart([])
+    }
+  }
+
+  useEffect(() => {
+    //   if(isUser){
+    //     console.log(typeof(userId))
+    //     let id =userId
+    //     const userDocRef = doc(db, 'users',  userId)
+    //     console.log("gkk")
+    //     setTimeout(()=>{ 
+    //       onSnapshot(userDocRef, (docc) => {
+
+    //         console.log("home")
+    //         setCart([...docc.data().cart]
+    //         )
+    //     }
+
+
+    //    )
+    // },500)
+
+    //     }
+    //     else{
+    //         setCart([])
+    //     }
+
+
+
+    fetchcart()
+    console.log(cart)
+  }, [])
   let [products, setProducts] = useState([
     {
       title: {
@@ -90,73 +134,6 @@ export default function Home() {
       image: require("../../assets/home/mobile_acc.jpg"),
       path: "/mobileAccessories",
     },
-<<<<<<< HEAD
-  ]);
-  const{cart,setCart}=useContext(CartContext)
-  const {isUser,userId,setUserId,setIsUser}=useContext(UserContext);
-  const [user, setUser] = useState({})
-  
-  
-  const fetchcart=async()=>{
-    if(isUser){
-      const userDocRef = doc(db, 'users',  userId)
-      onSnapshot(userDocRef, (docc) => {
-
-        console.log("home")
-        setCart([...docc.data().cart]
-        )
-      })
-  }
-  else{
-    setCart([])
-}
-}
-  
-  useEffect(() => {
-  //   if(isUser){
-  //     console.log(typeof(userId))
-  //     let id =userId
-  //     const userDocRef = doc(db, 'users',  userId)
-  //     console.log("gkk")
-  //     setTimeout(()=>{ 
-  //       onSnapshot(userDocRef, (docc) => {
-
-  //         console.log("home")
-  //         setCart([...docc.data().cart]
-  //         )
-  //     }
-      
-      
-  //    )
-  // },500)
-
-  //     }
-  //     else{
-  //         setCart([])
-  //     }
-      
-    
-        
-    fetchcart()
-console.log(cart)
-}, [])
-  return (
-    <>
-      <div className="homeSection">
-        <Slider  />
-        
-        <div className="homeContent p-3 m-0" >
-          <div className="row overflow-hidden gx-5 section" >
-            {products.map((prod, index) => (
-              <BigCart product={prod} key={index} />
-            ))}
-          </div>
-          {/* <div className="row overflow-hidden gx-5 section">
-            {products.slice(4, 8).map((prod, index) => (
-              <BigCart product={prod} key={index} />
-            ))}
-          </div> */}
-=======
     {
       title: {
         ar: "أساسيات المنزل",
@@ -375,7 +352,6 @@ console.log(cart)
               <BigCart product={prod} key={index} />
             ))}
           </div>
->>>>>>> omar
         </div>
       </div>
     </>
