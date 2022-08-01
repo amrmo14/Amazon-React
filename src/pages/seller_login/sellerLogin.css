@@ -1,0 +1,28 @@
+.login__box {
+  margin: 10rem 0;
+  margin-top: 5rem;
+}
+.login__box img {
+  height: 10rem;
+  width: auto;
+}
+.login__box h2 {
+  font-size: 3.5rem;
+  margin: 2rem 0;
+  margin-bottom: 5rem;
+}
+.login__ar {
+  font-family: "Almarai";
+}
+.login__en {
+  font-family: "Open sans";
+}
+.login__box .customBtn {
+  background-color: var(--mainColor) !important;
+  border: none;
+  box-shadow: none;
+}
+.login__link {
+  color: var(--orangeColor);
+  text-decoration: none;
+}

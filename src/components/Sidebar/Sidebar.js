@@ -315,13 +315,20 @@ export default function Sidebar(props) {
             {sidebar_items.en.map((item, index) => {
               if (item.main_items.last.length > 0) {
                 return (
+<<<<<<< HEAD
                   <>
                     <SidebarItem item={item} key={index} />
                     {IS_VIEW ? (
+=======
+                  <div key={index}>
+                    <SidebarItem item={item} key={index} />
+                    {IS_VIEW && (
+>>>>>>> omar
                       <SidebarItem
                         childItems={item.main_items.last}
                         key={index + 1}
                       />
+<<<<<<< HEAD
                     ) : (
                       ""
                     )}
@@ -331,10 +338,20 @@ export default function Sidebar(props) {
                         onClick={(e) => handleViewMore(e, item)}
                       >
                         <p>See All</p>
+=======
+                    )}
+                    {!IS_VIEW ? (
+                      <button
+                        className="customBtn d-flex align-items-center w-100 py-3"
+                        onClick={(e) => handleViewMore(e, item)}
+                      >
+                        <p className="fs-4 text-primary">See All</p>
+>>>>>>> omar
                         <i className="fa-solid fa-angle-down"></i>
                       </button>
                     ) : (
                       <button
+<<<<<<< HEAD
                         className="customBtn d-flex align-items-center w-100"
                         onClick={(e) => handleSeeLess(e, item)}
                       >
@@ -346,6 +363,19 @@ export default function Sidebar(props) {
                 );
               } else {
                 return <SidebarItem item={item} />;
+=======
+                        className="customBtn d-flex align-items-center w-100 py-3"
+                        onClick={(e) => handleSeeLess(e, item)}
+                      >
+                        <p className="fs-4 text-primary">See Less</p>
+                        <i className="fa-solid fa-chevron-up"></i>
+                      </button>
+                    )}
+                  </div>
+                );
+              } else {
+                return <SidebarItem item={item} key={index} />;
+>>>>>>> omar
               }
             })}
           </div>

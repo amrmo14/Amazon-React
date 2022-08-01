@@ -4,4 +4,11 @@ let cart = (state) => {
     payload: state,
   };
 };
+export let deleteProduct = (state) => {
+  return {
+    type: "DELETE_PRODUCT",
+    payload: state,
+  };
+};
+
 export default cart;

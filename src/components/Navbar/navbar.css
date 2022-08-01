@@ -49,3 +49,9 @@ i {
 .arabicFont {
   font-family: Almarai;
 }
+.nav__lang-ar {
+  font-family: "Almarai";
+}
+.nav__lang-en {
+  font-family: "Open Sans";
+}

@@ -8,6 +8,10 @@ import "./header.css";
 import { UserContext } from "../context/userContext";
 import { CartContext } from "../context/cartContext";
 import { useHistory } from "react-router-dom";
+
+import { getSeller } from "../../firebase/seller/sellers";
+import logging_action from "./../../store/actions/logging";
+import "./header.css";
 export default function Header() {
   const {isUser,setIsUser}=useContext(UserContext)
   const navigate = useHistory();
@@ -118,6 +122,17 @@ export default function Header() {
   let handleLang = (e) => {
     dispatch(lang__action(e.target.value));
   };
+  let [user, setUser] = useState({});
+  let IS_LOGGED = useSelector((state) => state.isLogged);
+  useEffect(() => {
+    let user = localStorage.getItem("userId");
+    if (user) {
+      getSeller(user).then((data) => {
+        setUser(data);
+        dispatch(logging_action(true));
+      });
+    }
+  }, [IS_LOGGED]);
   return (
     <>
       <div
@@ -157,7 +172,7 @@ export default function Header() {
             placeholder={lang == "en" ? "Search" : "أبحث"}
             onChange={(e) => handleSearch(e)}
           />
-          <button type="submit" className="header__submit m-0" >
+          <button type="submit" className="header__submit m-0">
             <i className="fa-solid fa-magnifying-glass"></i>
           </button>
         </form>
@@ -201,6 +216,7 @@ export default function Header() {
       window.location.reload()
       }}>
         {lang == "en" ? "Logout" : "تسجيل الخروج"}
+        <span>{user.name}</span>
       </button>} 
         
         

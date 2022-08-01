@@ -1,0 +1,25 @@
+.seller__signup {
+  background-color: var(--whiteColor);
+  padding: 4rem 0;
+}
+.signup__ar {
+  font-family: "Almarai";
+}
+.signup__en {
+  font-family: "Open sans";
+}
+.signup__right img {
+  width: 80%;
+}
+.signup__left img {
+  height: 10rem;
+  margin: 4rem 0;
+}
+.seller__signup .customBtn {
+  background-color: var(--mainColor) !important;
+  border: none;
+  box-shadow: none;
+}
+.signup__left small {
+  margin-top: 1rem !important;
+}
