@@ -18,87 +18,76 @@ const ProductDetails = (props) => {
     const navigate = useHistory();
     let [show, setShow] = useState(false)
 
-
+ 
     useEffect(() => {
         const ref = doc(db, "products", params.id)
-        const userDocRef = doc(db, 'users', '5xxvgWdGkQF0xtVn29kh')
-        // getDoc(ref).then((doc)=>setProduct(doc.data()))
-        onSnapshot(ref, (doc) => setProduct([{
-            id: doc.id,
-            data: doc.data()
-        }]))
-        // setCart([...cart])
-        //     if(isUser){
-
-        //     onSnapshot(userDocRef, (doc) => {
-
-        //         console.log("gggg",)
-        //         setCart([...doc.data().cart]
-        //         )
-        //     }
-
-        //    )
-        //     }
-        //     else{
-        //         setCart([])
-        //     }
-        // console.log(...cart)
-
+        onSnapshot(ref, (doc) => {
+            setProduct([{
+                id: doc.id,
+                data: doc.data()
+            }])
+            console.log("details",)
+        })
     }, [])
 
-    function addToCart(product) {
+   async function addToCart(product) {
         // setCart([product.data])
-        console.log(product)
+        console.log("p", product)
         if (isUser) {
-            const userDocRef = doc(db, 'users', userId)
-
+            console.log(userId)
             try {
+                const userDocRef = doc(db, 'users', userId)
                 if (cart.length == 0) {
-                    updateDoc(userDocRef, {
+                   await updateDoc(userDocRef, {
                         cart: [...cart, { data: { ...product.data, quant: 1 }, id: product.id }],
                     })
                     console.log("ff", cart)
                 }
                 else {
-                    cart.map(item => {
-                        console.log("it", item)
-                        if (item.id == product.id) {
-                            item.data.quant = Number(item.data.quant) + 1
-                            console.log(item.data.quant)
-                            cart.splice(cart.findIndex((ele) => { return ele.id == item.id }), 1);
-                            updateDoc(userDocRef, {
-                                cart: [...cart, { data: { ...product.data, quant: item.data.quant }, id: product.id }],
-                            })
-                        }
-                        else {
-                            updateDoc(userDocRef, {
-                                cart: [...cart, { data: { ...product.data, quant: 1 }, id: product.id }],
-                            })
-                        }
-                    })
+                   await updateCart(product)
                 }
-
-                console.log(cart)
-
-            } catch (err) {
-                alert(err)
+            } 
+            catch (err) {
+                alert(err) 
             }
-
-
-
-
             setShow(true)
-            setTimeout(()=>setShow(false), 1500)
-
-
+            setTimeout(() => setShow(false), 1500)
         }
         else {
             navigate.push("/login")
         }
+    }
+    const updateCart = async (product) => {
+        const userDocRef = await doc(db, 'users', userId)
+        console.log("333")
+        cart.forEach(item => {
+            if (item.id == product.id) {
+                item.data.quant = Number(item.data.quant) + 1
+                console.log(item.data.quant)
+                cart.splice(cart.findIndex((ele) => { return ele.id == item.id }), 1);
+                updateFoundedinCart(product,item.data.quant)
+            } else {
+                console.log("hhhhh")
+                updateNotinCart(product)
+            }
+        })
+    }
+ 
+    const updateFoundedinCart = async (product,quant) => {
+        const userDocRef = await doc(db, 'users', userId)
+       await updateDoc(userDocRef, {
+            cart: [...cart, { data: { ...product.data, quant: quant }, id: product.id }]
+        })
 
     }
 
+    const updateNotinCart = async (product) => {
+        const userDocRef = await doc(db, 'users', userId)
+       await updateDoc(userDocRef, {
+            cart: [...cart, { data: { ...product.data, quant: 1 }, id: product.id }]
+        })
 
+    }
     return (<>
         <div>
             {product.map((product, index) => {
@@ -106,14 +95,14 @@ const ProductDetails = (props) => {
                     <div className='row justify-content-center' key={product.id}>
                         <div className="card col-3 m-5 " >
                             <img src={product.data.Img} className="card-img-top" alt="..." />
-                            <div className="card-body">
+                            <div className="card-body text-center">
                                 <h5 className="card-title">{product.data.name}</h5>
-                                <button onClick={() => addToCart(product)}>add to cart</button>
-                                {(show) ? 
-                                <div class="alert alert-danger" role="alert">
-                                product added to cart.
-                              </div>
-                                : <div></div>}
+                                <button type="button" className="btn btn-success" onClick={() => addToCart(product)}>add to cart</button>
+                                {(show) ?
+                                    <div className="alert alert-danger" role="alert">
+                                        product added to cart.
+                                    </div>
+                                    : <div></div>}
 
                             </div>
                         </div>

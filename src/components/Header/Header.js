@@ -157,7 +157,7 @@ export default function Header() {
             placeholder={lang == "en" ? "Search" : "أبحث"}
             onChange={(e) => handleSearch(e)}
           />
-          <button type="submit" className="header__submit m-0">
+          <button type="submit" className="header__submit m-0" >
             <i className="fa-solid fa-magnifying-glass"></i>
           </button>
         </form>
@@ -167,7 +167,7 @@ export default function Header() {
           </option>
           <option value="ar">العربيــة - AR</option>
         </select>
-        <Link to="/cart" className="cart__link">
+        {(isUser)?<Link to="/cart" className="cart__link">
           <div className="header__cart mx-4 d-flex align-items-center">
             <p className="m-0">{lang == "en" ? "Cart" : "العربــة"}</p>
             <div className="header__cart-box position-relative">
@@ -176,7 +176,20 @@ export default function Header() {
             </div>
           </div>
         
-        </Link>
+        </Link>:
+        <Link to="/login" className="cart__link">
+        <div className="header__cart mx-4 d-flex align-items-center">
+          <p className="m-0">{lang == "en" ? "Cart" : "العربــة"}</p>
+          <div className="header__cart-box position-relative">
+            <p className="header__cart-box-number">{cart.length}</p>
+            <i class="fa-solid fa-cart-shopping"></i>
+          </div>
+        </div>
+      
+      </Link>
+        }
+
+
         {(isUser==false)?
         <Link to='/login'>
         <button className="header__loginBtn">
