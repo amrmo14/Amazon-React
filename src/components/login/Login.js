@@ -5,7 +5,7 @@ import { auth, logInWithEmailAndPassword, signInWithGoogle } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import "./Login.css";
 import { UserContext } from "../context/userContext";
-import { collection, query, orderBy, onSnapshot, doc, getDoc } from "firebase/firestore"
+import { collection, query, orderBy, onSnapshot, doc, getDocs } from "firebase/firestore"
 import { db } from "../firebase";
 import { updateDoc } from "firebase/firestore";
 function Login() {
@@ -14,52 +14,61 @@ function Login() {
     const [user, loading, error] = useAuthState(auth);
     const navigate = useHistory();
     const { isUser, userId, setUserId, setIsUser } = useContext(UserContext);
+    const [done, setDone] = useState(true)
 
     function GoHome() {
         navigate.push("/")
     }
-    useEffect(() => {
-        const q = query(collection(db, 'users'))
-        
-        onSnapshot(q, (querySnapshot) => {
-            // console.log(querySnapshot.docs[0].id)
-          querySnapshot.docs.map(docc => {
-            // console.log(docc.id,docc.data())
-            const taskDocRef = doc(db, 'users', docc.id)
-            try{
-               updateDoc(taskDocRef, {
-                id: docc.id,
-                ...docc.data()
-              })
-             
+    const fetchUsers = async () => {
+        const response = collection(db, 'users');
+        const data = await getDocs(response)
+        data.docs.forEach(item => {
+            const taskDocRef = doc(db, 'users', item.id)
+            console.log("from useEffect")
+            try {
+                updateDoc(taskDocRef, {
+                    id: item.id,
+                    ...item.data()
+                })
+
             } catch (err) {
-              alert(err)
-            }    
+                alert(err)
+            }
         })
-        })
+
         if (loading) {
-            // maybe trigger a loading screen
-            return;
+            return
         }
         if (user) {
-            onSnapshot(q, (querySnapshot) => {
-                // console.log(querySnapshot.docs[0].id)
-              querySnapshot.docs.map(docc => {
-                // console.log(docc.id,docc.data())
-                if(user.uid==docc.data().uid){
-                    console.log(docc.id)
-                    setUserId(docc.id)
-                }
-            })
-            })
-            
-            setIsUser(true)
-            
-            GoHome() 
-            console.log("user",user)
-            setUserId('5xxvgWdGkQF0xtVn29kh')
-        };
-    }, [user, loading]);
+            if (done) {
+                const response = collection(db, 'users');
+                const data = await getDocs(response)
+                data.docs.forEach(item => {
+                    // console.log(docc.id,docc.data())
+                    if (user.uid == item.data().uid) {
+                        console.log(item.id)
+                        setUserId(item.id)
+                        setDone(false)
+                    }
+                })
+            }
+
+        }
+
+        setIsUser(true)
+
+        GoHome()
+        console.log("user", user)
+        // setUserId('5xxvgWdGkQF0xtVn29kh')
+    };
+
+    useEffect(() => {
+
+
+        fetchUsers()
+
+
+    }, [user]);
     return (
         <div className="login row my-5">
 

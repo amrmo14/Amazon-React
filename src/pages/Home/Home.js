@@ -5,7 +5,7 @@ import { CartContext } from "../../components/context/cartContext";
 import Slider from "../../components/Slider/Slider";
 import "./home.css";
 import { db} from '../../components/firebase'
-import { collection, query, orderBy, onSnapshot, doc, getDoc } from "firebase/firestore"
+import { collection, query, orderBy, onSnapshot, doc, getDocs } from "firebase/firestore"
 import { UserContext } from "../../components/context/userContext";
 
 export default function Home() {
@@ -83,29 +83,50 @@ export default function Home() {
   ]);
   const{cart,setCart}=useContext(CartContext)
   const {isUser,userId,setUserId,setIsUser}=useContext(UserContext);
-
-  useEffect(() => {
+  const [user, setUser] = useState({})
+  
+  
+  const fetchcart=async()=>{
     if(isUser){
-      console.log(typeof(userId))
-      let id =userId
       const userDocRef = doc(db, 'users',  userId)
-      console.log("gkk")
       onSnapshot(userDocRef, (docc) => {
 
-          console.log("home")
-          setCart([...docc.data().cart]
-          )
-      }
+        console.log("home")
+        setCart([...docc.data().cart]
+        )
+      })
+  }
+  else{
+    setCart([])
+}
+}
+  
+  useEffect(() => {
+  //   if(isUser){
+  //     console.log(typeof(userId))
+  //     let id =userId
+  //     const userDocRef = doc(db, 'users',  userId)
+  //     console.log("gkk")
+  //     setTimeout(()=>{ 
+  //       onSnapshot(userDocRef, (docc) => {
+
+  //         console.log("home")
+  //         setCart([...docc.data().cart]
+  //         )
+  //     }
       
-     )
-      }
-      else{
-          setCart([])
-      }
+      
+  //    )
+  // },500)
+
+  //     }
+  //     else{
+  //         setCart([])
+  //     }
       
     
         
-    
+    fetchcart()
 console.log(cart)
 }, [])
   return (
