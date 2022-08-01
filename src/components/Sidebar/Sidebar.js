@@ -315,37 +315,35 @@ export default function Sidebar(props) {
             {sidebar_items.en.map((item, index) => {
               if (item.main_items.last.length > 0) {
                 return (
-                  <>
+                  <div key={index}>
                     <SidebarItem item={item} key={index} />
-                    {IS_VIEW ? (
+                    {IS_VIEW && (
                       <SidebarItem
                         childItems={item.main_items.last}
                         key={index + 1}
                       />
-                    ) : (
-                      ""
                     )}
                     {!IS_VIEW ? (
                       <button
-                        className="customBtn d-flex align-items-center w-100"
+                        className="customBtn d-flex align-items-center w-100 py-3"
                         onClick={(e) => handleViewMore(e, item)}
                       >
-                        <p>See All</p>
+                        <p className="fs-4 text-primary">See All</p>
                         <i className="fa-solid fa-angle-down"></i>
                       </button>
                     ) : (
                       <button
-                        className="customBtn d-flex align-items-center w-100"
+                        className="customBtn d-flex align-items-center w-100 py-3"
                         onClick={(e) => handleSeeLess(e, item)}
                       >
-                        <p>See Less</p>
+                        <p className="fs-4 text-primary">See Less</p>
                         <i className="fa-solid fa-chevron-up"></i>
                       </button>
                     )}
-                  </>
+                  </div>
                 );
               } else {
-                return <SidebarItem item={item} />;
+                return <SidebarItem item={item} key={index} />;
               }
             })}
           </div>

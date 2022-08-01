@@ -1,0 +1,31 @@
+.customCart {
+  min-height: 50vh;
+  max-height: auto;
+  width: 100%;
+}
+.product__cart {
+  width: 100%;
+  background-color: var(--whiteColor);
+  margin: 2rem 0 !important;
+  border-radius: 2rem;
+  padding: 3rem 0;
+}
+.product__cart-img {
+  height: auto;
+  width: 30rem;
+  object-fit: contain;
+  max-height: 20rem;
+}
+.cart__text-ar {
+  font-family: "Almarai";
+  font-weight: 900;
+}
+.cart__text-en {
+  font-family: "Open Sans";
+}
+.cart__link {
+  color: var(--mainColor);
+}
+.cart__link:hover {
+  color: var(--mainColor);
+}

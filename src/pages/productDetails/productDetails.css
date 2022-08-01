@@ -1,0 +1,151 @@
+.details {
+  background-color: var(--whiteColor);
+  font-size: 10rem;
+  padding: 10rem 0;
+}
+.gallery {
+  height: 90vh;
+}
+.gallery__slider {
+  height: 100%;
+  width: 9rem;
+}
+.gallery__slider img {
+  width: 70%;
+  height: auto;
+  max-height: 10rem;
+  object-fit: contain;
+  margin: 1rem 0;
+  border: 0.2rem solid transparent;
+}
+.gallery__active {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  margin-left: 3rem;
+}
+.gallery__active img {
+  /* width: 100%; */
+  height: 100%;
+}
+.active {
+  border: 0.1rem solid orangered;
+}
+/*-------------------------------------- Styling product */
+.productInfo__title {
+  font-size: 2rem;
+  line-height: 1.3;
+  font-weight: 700;
+}
+.productInfo__brand {
+  font-size: 1.6rem;
+}
+.productInfo .dash {
+  width: 30rem;
+  height: 0.1rem;
+  background-color: var(--mainColor);
+  opacity: 0.5;
+  margin: 3rem 0;
+}
+.productInfo__price {
+  line-height: 1.3;
+}
+.productInfo__was {
+  font-size: 1.4rem;
+  font-weight: 300;
+}
+.productInfo__was span {
+  text-decoration: line-through;
+  font-size: 1.9rem;
+  margin: 0 0.5rem;
+}
+.productInfo__withDeal {
+  font-size: 2rem;
+}
+.productInfo__withDeal span {
+  font-weight: bold;
+  font-size: 2.2rem;
+  margin: 0 0.5rem;
+  color: var(--redColor);
+}
+.productInfo__save {
+  font-size: 1.3rem;
+}
+.productInfo__save span {
+  font-weight: bold;
+  font-size: 1.6rem;
+  margin: 0 0.5rem;
+  color: var(--redColor);
+}
+.productInfo__prop {
+  line-height: 1.3;
+}
+
+.productInfo__prop-box {
+  font-size: 1.6rem;
+}
+.productInfo__prop-box span {
+  font-weight: 900;
+}
+.productFont_ar {
+  font-family: "Almarai";
+}
+.productFont_en {
+  font-family: "Open Sans";
+}
+/*------------------------------------------- styling procceing (rigth)  */
+.processing {
+  padding: 3rem;
+  border: 0.1rem dashed var(--mainColor);
+  margin-top: 10rem;
+  font-size: 1.6rem;
+}
+.processing__price {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+.proessing__delivery,
+.processing__quantityBox p {
+  font-size: 1.6rem;
+}
+.proessing__delivery span {
+  font-weight: bold;
+  color: var(--redColor);
+}
+.processing__quantityBox {
+  display: flex;
+  align-items: center;
+}
+.processing__quantityBox select {
+  /* height: 5rem; */
+  font-size: 1.6rem;
+  width: 10rem;
+}
+.customBtn {
+  display: inline-block;
+  color: var(--whiteColor);
+  padding: 0.5rem 2rem;
+  border: none;
+  border-radius: 1rem;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+}
+.primaryBtn {
+  background-color: var(--mainColor);
+}
+
+.secondaryBtn {
+  background-color: orangered;
+}
+.processing__seller {
+  font-size: 1.4rem;
+}
+.processing__seller span {
+  font-weight: bold;
+}
+.small__Error {
+  color: red;
+  font-size: 1.3rem;
+  display: block;
+}

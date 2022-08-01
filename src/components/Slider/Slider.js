@@ -31,8 +31,9 @@ export default function Slider() {
       },
     },
   ]);
+
   return (
-    <div className="cutomSwiper ">
+    <div className="cutomSwiper">
       <div className="customSwiper__overlay"></div>
       <Swiper
         slidesPerView={1}
@@ -43,8 +44,6 @@ export default function Slider() {
           disableOnInteraction: false,
         }}
         modules={[Navigation, Autoplay]}
-        onSlideChange={() => console.log("Change")}
-        onSwiper={(swiper) => console.log(swiper)}
       >
         {sliders.map((slider, index) =>
           lang == "en" ? (

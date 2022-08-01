@@ -1,0 +1,52 @@
+.midCart {
+  background-color: var(--whiteColor);
+  padding: 2rem 0;
+  padding-bottom: 3rem;
+}
+.midCart__headerEn,
+.midCart__headerAr {
+  font-weight: 600;
+  font-size: 2.5rem;
+  padding: 1rem 2rem;
+}
+.midCart__headerAr,
+.midCart__swipSlide-pAr {
+  font-family: "Almarai";
+}
+.midCart__headerEn {
+  font-family: "Open Sans";
+}
+.midCart__link {
+  color: white;
+  text-decoration: none;
+}
+.midcart__link:hover {
+  color: white;
+}
+.midCart__swiper {
+  height: 35vh;
+  width: 100%;
+  background-color: var(--whiteColor);
+}
+.midCart__swiperSlide {
+  overflow: hidden;
+}
+.midCart__contaier {
+  height: 100%;
+}
+.midCart__swiperSlide img {
+  width: auto;
+  height: auto;
+  max-height: 22.5rem;
+  max-width: 20rem;
+}
+.midCart__swipSlide-pEn,
+.midCart__swipSlide-pAr {
+  text-align: center;
+  align-self: stretch;
+  color: var(--whiteColor);
+  background-color: crimson;
+  padding: 0.5rem;
+  font-weight: 600;
+  font-size: 1.3rem;
+}

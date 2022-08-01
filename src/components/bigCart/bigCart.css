@@ -7,12 +7,12 @@
   padding-bottom: 1rem;
   overflow: hidden;
   height: 44rem;
-  /* background-color: var(--whiteColor); */
+  background-color: var(--whiteColor);
   transition: all 0.3s ease-in;
 }
-/* .customBigCart:hover {
+.customBigCart:hover {
   background-color: var(--secondaryWhiteColor);
-} */
+}
 .customBigCart__head-en,
 .customBigCart__head-ar {
   font-weight: 900;

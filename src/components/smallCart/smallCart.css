@@ -1,0 +1,13 @@
+.smallCart {
+  height: auto;
+  background-color: var(--whiteColor);
+}
+.smallCart .swiper {
+  height: 100%;
+  width: 100%;
+  padding: 2rem 0;
+}
+.smallCart .swiper-slide img {
+  height: auto;
+  width: 100%;
+}
