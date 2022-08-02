@@ -92,10 +92,15 @@ export let logout = async () => {
 };
 
 //HANDLE: Reset password
-export let resetPassword = async () => {
-  let d = doc(db, "sellers", "UeLdZp9mBXXYjAmnYdsc");
-  await updateDoc(d, {
-    name: "Updated Amr",
-  });
-  return d;
+export let resetPassword = async (userId, newPassword) => {
+  try {
+    let d = doc(db, "sellers", userId);
+    await updateDoc(d, {
+      password: newPassword,
+    });
+    await updatePassword(auth.currentUser, newPassword);
+    return "success";
+  } catch (err) {
+    return err.message;
+  }
 };

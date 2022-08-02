@@ -68,16 +68,23 @@ export default function AccountInfo() {
     validate,
     onSubmit: (values) => {
       setProcess(pageData.wait);
-      resetPassword()
+      resetPassword(localStorage.getItem("userId"), values.password)
         .then((data) => {
           setProcess(pageData.success);
           // formik.resetForm();
           console.log(data);
           console.log("Password update");
+          setTimeout(() => {
+            setProcess("");
+            formik.resetForm();
+          }, 2000);
         })
         .catch((err) => {
           console.log(err);
           setProcess(pageData.failed, err);
+          setTimeout(() => {
+            setProcess("");
+          }, 2000);
         });
     },
   });

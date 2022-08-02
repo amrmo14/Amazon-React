@@ -1,9 +1,88 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import LocalizedStrings from "react-localization";
-import { useSelector } from "react-redux";
 import "./addProduct.css";
+import { addProduct, uploadImgs } from "../../firebase/products/products";
+import { useState } from "react";
+import { storage } from "../../firebase/config";
+import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
+import { v4 } from "uuid";
+import { useSelector } from "react-redux";
+
 export default function AddProduct() {
+  let [process, setProcess] = useState("");
+  let [imgs, setImgs] = useState([]);
+  let [imgsUrl, setImgsUrl] = useState([]);
+  let lang = useSelector((state) => state.lang.lang);
+  let category_en = [
+    {
+      name: "Electronics",
+      value: "electronics",
+    },
+    {
+      name: "Mobiles",
+      value: "mobiles",
+    },
+    {
+      name: "Video Games",
+      value: "videoGames",
+    },
+    {
+      name: "Perfumes",
+      value: "perfumes",
+    },
+  ];
+  let category_ar = [
+    {
+      name: "الكترونيات",
+      value: "electronics",
+    },
+    {
+      name: "هواتف",
+      value: "mobiles",
+    },
+    {
+      name: "العاب فيديو",
+      value: "videoGames",
+    },
+    {
+      name: "برفان",
+      value: "perfumes",
+    },
+  ];
+  //HANDLE: upload an image to firebase storage
+  let urls = [];
+
+  let onUpload = (productId) => {
+    imgs.forEach((img) => {
+      let imgName = `${productId}/${img.name + v4()}`;
+      let imgRef = ref(storage, `images/${imgName}`);
+      uploadBytes(imgRef, img).then((uploadedImg) => {
+        getDownloadURL(uploadedImg.ref).then((url) => {
+          urls.push(url);
+          console.log(urls);
+          uploadImgs(productId, urls);
+          setProcess(pageData.success);
+          setTimeout(() => {
+            setProcess("");
+            formik.resetForm();
+          }, 2000);
+        });
+      });
+    });
+  };
+  let pageData = new LocalizedStrings({
+    en: {
+      wait: "Please wait",
+      success: "Producct added successfully",
+      failed: "Process is failed, please try again",
+    },
+    ar: {
+      wait: "من فضلك انتظر",
+      success: "تم اضافة المنتج بنجاح",
+      failed: "فشلت العملية, من فضلك حاول مرة اخري",
+    },
+  });
   let validate = (values) => {
     let errors = {};
     if (!values.en.name) {
@@ -28,20 +107,24 @@ export default function AddProduct() {
     if (!values.ar.brand) {
       errors.brand_ar = "البراند الخاص بالمنتج غير موجود";
     }
-    if (values.en.imgs.length == 0) {
-      errors.imgs_en = "Product must has at least 1 photo";
+    if (!values.en.category) {
+      errors.category_en = "Please Select Product Category!";
     }
-    if (values.ar.imgs.length == 0) {
-      errors.imgs_ar = "المنتج يجب ان يحتوي علي صور علي الاقل";
+    if (!values.ar.category) {
+      errors.category_ar = "من فضلك قم بتحديد نوع المنتج";
     }
-    if (values.ar.imgs.length != values.en.imgs.length) {
-      errors.imgs_ar = "عدد الصور لايتطابق مع عدد صور المنتج باللغه الانجليزية";
+    if (values.en.category != values.ar.category) {
+      errors.category_ar =
+        "يجب ان يتشابة نوع المنتج باللغتين / Category is not the same type in language";
+    }
+    if (values.imgs.length == 0) {
+      errors.imgs_ar =
+        "Product should have at least 1 image / المنتج يجب ان يحتوي علي صور علي الاقل";
     }
     if (values.ar.properities.length != values.en.properities.length) {
       errors.properities_ar =
         "عدد الخصائص لايتطابق مع عدد خصائص المنتج باللغه الانجليزية";
     }
-    console.log(formik);
     return errors;
   };
   let formik = useFormik({
@@ -49,43 +132,93 @@ export default function AddProduct() {
       en: {
         name: "",
         brand: "",
-        price: "",
-        discount: 0,
-        imgs: [],
+        price: 0,
         properities: [],
-        seller: "",
+        category: "",
       },
       ar: {
         name: "",
         brand: "",
-        price: "",
-        discount: 0,
-        imgs: [],
+        price: 0,
         properities: [],
-        seller: "",
+        category: "",
       },
+      discount: 0,
+      imgs: [],
+      quantity: 1,
+      availablyQuaintity: 0,
+      soldQuantity: 0,
     },
     validate,
     onSubmit: (values) => {
-      console.log(formik);
+      values.availablyQuaintity = values.quantity;
+      setProcess(pageData.wait);
       console.log(values);
+      addProduct(values)
+        .then((prodID) => {
+          console.log(prodID);
+          onUpload(prodID);
+          //---------------------- START: Reset UI
+          setImgs([]);
+          urls = [];
+          setImgsUrl([]);
+          setDynamicIndexs({
+            arImgIndex: 0,
+            arPropIndex: 0,
+            enImgIndex: 0,
+            enPropIndex: 0,
+          });
+
+          //------------------------ END: RESET UI
+        })
+        .catch((err) => {
+          setProcess(pageData.failed);
+          setTimeout(() => {
+            setProcess("");
+          }, 2000);
+        });
     },
   });
-
+  //HANDLE: imgs and property
+  let [dynamicIndexs, setDynamicIndexs] = useState({
+    enImgIndex: 0,
+    arImgIndex: 0,
+    enPropIndex: 0,
+    arPropIndex: 0,
+  });
   let handleAddProperty = (e, formLang) => {
     if (formLang == "en") {
-      formik.values.en.properities.push({ name: "", value: "" });
+      formik.setFieldValue(`en.properities[${dynamicIndexs.enPropIndex}]`, "");
+      setDynamicIndexs((prevState) => {
+        return {
+          ...prevState,
+          enPropIndex: prevState.enPropIndex + 1,
+        };
+      });
     } else {
-      formik.values.ar.properities.push({ name: "", value: "" });
+      formik.setFieldValue(`ar.properities[${dynamicIndexs.arPropIndex}]`, "");
+      setDynamicIndexs((prevState) => {
+        return {
+          ...prevState,
+          arPropIndex: prevState.arPropIndex + 1,
+        };
+      });
     }
   };
+
   let handleMoreImgs = (e, formLang) => {
-    if (formLang == "en") {
-      formik.values.en.imgs.push("");
-    } else {
-      formik.values.ar.imgs.push("");
-    }
+    formik.setFieldValue(`imgs[${dynamicIndexs.enImgIndex}]`, "");
+    setDynamicIndexs((prevState) => {
+      return {
+        ...prevState,
+        enImgIndex: prevState.enImgIndex + 1,
+      };
+    });
   };
+  let handleImgs = (file, index) => {
+    setImgs((prevState) => [...prevState, file]);
+  };
+  pageData.setLanguage(lang);
   return (
     <div className={`seller_addProduct `}>
       <div className="row mt-5">
@@ -124,6 +257,7 @@ export default function AddProduct() {
                 className="form-control w-25 seller__addProduct-input"
                 type="number"
                 id="english__price"
+                min="1"
                 value={formik.values.en.price}
                 name="en.price"
                 onChange={formik.handleChange}
@@ -152,25 +286,35 @@ export default function AddProduct() {
                 </small>
               )}
             </div>
-            <div className="mb-3">
-              <label htmlFor="english__discount" className="english__label">
-                Discount
+            <div className="mb-5">
+              <label htmlFor="english__brand" className="english__label">
+                <span className="text-danger">*</span>Category
               </label>
-              <input
-                className="form-control w-25 seller__addProduct-input"
-                type="number"
-                id="english__discount"
-                value={formik.values.en.discount}
-                name="en.discount"
+              <select
+                name="en.category"
+                value={formik.values.en.category}
                 onChange={formik.handleChange}
-              />
+                className="py-2 px-5 mt-1 fs-4"
+              >
+                {category_en.map((item, index) => (
+                  <option value={item.value} key={index}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+              {formik.errors.category_en && (
+                <small className="text-danger py-2 d-block fs-5">
+                  {formik.errors.category_en}
+                </small>
+              )}
             </div>
+
             <div className="mb-3">
               <label htmlFor="english__discount" className="english__label">
                 Product Properties
               </label>
               {formik.values.en.properities.map((property, index) => (
-                <div className="d-flex mb-4">
+                <div className="d-flex mb-4" key={index}>
                   <input
                     className="form-control w-25 py-3 px-4 fs-5"
                     placeholder="name"
@@ -191,35 +335,11 @@ export default function AddProduct() {
                 <button
                   className="btn btn-danger fs-5"
                   onClick={(e) => handleAddProperty(e, "en")}
+                  type="button"
                 >
                   Add Property
                 </button>
               </div>
-            </div>
-            {/* HANDLE: Images */}
-            <div>
-              <label htmlFor="english__images" className="english__label">
-                Product Images
-              </label>
-              {formik.values.en.imgs.map((img, index) => (
-                <input
-                  className="form-control w-50 seller__addProduct-input mb-3"
-                  type="file"
-                  id="english__images"
-                  value={formik.values.en.imgs[index]}
-                  name={`en.imgs[${index}]`}
-                  // onChange={(e) => handleImgs(e, "en")}
-                  onChange={formik.handleChange}
-                />
-              ))}
-            </div>
-            <div className="d-flex justify-content-end">
-              <button
-                className="btn btn-danger fs-5"
-                onClick={(e) => handleMoreImgs(e, "en")}
-              >
-                Add Image
-              </button>
             </div>
           </form>
         </div>
@@ -274,6 +394,7 @@ export default function AddProduct() {
                 className="form-control w-25 seller__addProduct-input"
                 type="number"
                 id="arabic__price"
+                min="1"
                 value={formik.values.ar.price}
                 name="ar.price"
                 onChange={formik.handleChange}
@@ -302,16 +423,53 @@ export default function AddProduct() {
                 </small>
               )}
             </div>
+            <div className="mb-5">
+              <label htmlFor="english__brand" className="english__label">
+                <span className="text-danger">*</span>النوع
+              </label>
+              <select
+                name="ar.category"
+                value={formik.values.ar.category}
+                onChange={formik.handleChange}
+                className="py-2 px-5 mt-1 fs-4"
+              >
+                {category_ar.map((item, index) => (
+                  <option value={item.value} key={index}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+              {formik.errors.category_ar && (
+                <small className="text-danger py-2 d-block fs-5">
+                  {formik.errors.category_ar}
+                </small>
+              )}
+            </div>
             <div className="mb-3">
               <label htmlFor="arabic__discount" className="arabic__label">
-                الخصم
+                Discount /الخصم
+              </label>
+              <input
+                className="form-control w-25 d-inline-block seller__addProduct-input"
+                type="number"
+                id="arabic__discount"
+                min="0"
+                value={formik.values.discount}
+                name="discount"
+                onChange={formik.handleChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="arabic__discount" className="arabic__label">
+                Quantity / الكمية
               </label>
               <input
                 className="form-control w-25 seller__addProduct-input"
                 type="number"
                 id="arabic__discount"
-                value={formik.values.ar.discount}
-                name="ar.discount"
+                min="1"
+                value={formik.values.quantity}
+                name="quantity"
                 onChange={formik.handleChange}
               />
             </div>
@@ -320,7 +478,7 @@ export default function AddProduct() {
                 خصائص المنتج
               </label>
               {formik.values.ar.properities.map((property, index) => (
-                <div className="d-flex mb-4">
+                <div className="d-flex mb-4" key={index}>
                   <input
                     className="form-control w-25 py-3 px-4 fs-5"
                     placeholder="أسم الخاصية"
@@ -346,6 +504,7 @@ export default function AddProduct() {
                 <button
                   className="btn btn-danger fs-5"
                   onClick={(e) => handleAddProperty(e, "ar")}
+                  type="button"
                 >
                   أضافة خاصية جديده للمنتج
                 </button>
@@ -353,18 +512,21 @@ export default function AddProduct() {
             </div>
             {/* HANDLE: Images */}
             <div>
-              <label htmlFor="arabic__images" className="arabic__label">
-                صور المنتج
+              <label htmlFor="arabic__images" className="arabic__label mb-5">
+                Product Images / صور المنتج
               </label>
-              {formik.values.ar.imgs.map((img, index) => (
+              {formik.values.imgs.map((img, index) => (
                 <input
-                  className="form-control w-50 seller__addProduct-input mb-3"
+                  className="form-control  seller__addProduct-input mb-3 d-inline-block"
                   type="file"
                   id="arabic__images"
-                  value={formik.values.ar.imgs[index]}
-                  name={`ar.imgs[${index}]`}
-                  // onChange={(e) => handleImgs(e, "en")}
-                  onChange={formik.handleChange}
+                  value={formik.values.imgs[index]}
+                  name={`imgs[${index}]`}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                    handleImgs(e.target.files[0], index);
+                  }}
+                  key={index}
                 />
               ))}
             </div>
@@ -374,22 +536,26 @@ export default function AddProduct() {
                   {formik.errors.imgs_ar}
                 </small>
               )}
-              <button
+              <div
                 className="btn btn-danger fs-5"
                 onClick={(e) => handleMoreImgs(e, "ar")}
+                // type="button"
+                // href="#"
               >
                 أضافة صورة جديدة للمنتج
-              </button>
+              </div>
             </div>
-            {/* <button className="seller__addProduct-btn" disabled={true}> */}
             <button
+              type="submit"
               className="btn btn-primary  fs-4 seller__addProduct-btn"
               disabled={Object.keys(formik.errors).length}
-              type="submit"
             >
               Add Product / أضافة المنتج
             </button>
           </form>
+          {process && (
+            <div className="alert alert-primary fs-4 mt-4">{process}</div>
+          )}
         </div>
       </div>
     </div>
