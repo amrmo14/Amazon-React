@@ -64,3 +64,11 @@ export let getProductComments = async (prodiD) => {
   let data = product.data();
   return data.comments;
 };
+
+//HANDLE: get product by id
+export let getProductById = async (id) => {
+  let docRef = doc(db, "products", id);
+  let productRef = await getDoc(docRef);
+  let product = productRef.data();
+  return product;
+};

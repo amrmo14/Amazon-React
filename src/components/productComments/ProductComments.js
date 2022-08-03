@@ -36,30 +36,14 @@ export default function ProductComments() {
   let starsArr = new Array(5).fill(0);
   let { id } = useParams();
   pageData.setLanguage(lang);
-  let docRef = doc(db, "products", "aDOMzsm92WZI2Xog2LoU");
+  let docRef = doc(db, "products", id);
   //HANDLE: use Effect
   useEffect(() => {
     onSnapshot(docRef, (snapshot) => {
       setComments(snapshot.data().comments);
     });
   }, []);
-  // useEffect(() => {
-  //   onSnapshot(docRef, (snapshot) => {
-  //     snapshot.data().comments.forEach((comment) => {
-  //       getSeller(comment.userId).then((user) => {
-  //         setComments((prevState) => {
-  //           return [
-  //             ...prevState,
-  //             {
-  //               ...comment,
-  //               userName: user.name,
-  //             },
-  //           ];
-  //         });
-  //       });
-  //     });
-  //   });
-  // }, []);
+
   let handleCommentChange = (e) => {
     setComment(e.target.value);
     console.log(comment);
@@ -77,12 +61,15 @@ export default function ProductComments() {
   };
   let handleAddComment = (prodId) => {
     getSeller(localStorage.getItem("userId")).then((user) => {
-      addProductComment("aDOMzsm92WZI2Xog2LoU", {
+      addProductComment(prodId, {
         rate,
         comment,
         date,
         userName: user.name,
-      }).then((snapShot) => {});
+      }).then((snapShot) => {
+        setComment("");
+        setRate(0);
+      });
     });
   };
   //END HANDLE: rate
@@ -91,7 +78,7 @@ export default function ProductComments() {
       <div className="productComments w-100" dir={lang == "en" ? "ltr" : "rtl"}>
         <h2 className="mb-5">{pageData.title}</h2>
         {/* HANDLE: display comments and rating*/}
-        {comments.length > 0 ? (
+        {comments ? (
           comments.map((userComment, index) => (
             <div className="d-flex flex-column align-items-start" key={index}>
               <div className="d-flex flex-column align-items-start user__box w-100">
@@ -151,7 +138,7 @@ export default function ProductComments() {
             <button
               className="btn btn-primary productComment__Btn d-block mt-3"
               onClick={() => {
-                handleAddComment("");
+                handleAddComment(id);
               }}
             >
               {pageData.add}
