@@ -1,0 +1,52 @@
+.productComments {
+  margin: 10rem 0 !important;
+  font-size: 1.6rem;
+}
+.productComments h2 {
+  font-size: 2.6rem;
+  font-weight: 600;
+}
+.productComment__Btn {
+  background-color: var(--mainColor) !important;
+  padding: 0.6rem 3rem !important;
+  font-size: 1.6rem !important;
+  border-color: transparent !important;
+  box-shadow: none;
+  margin: 5rem 0;
+}
+.productComment__commentBox {
+  margin-top: 5rem;
+}
+.productComment__commentBox-commentInput {
+  min-height: 10rem;
+  /* min-width: 40rem; */
+  max-width: 100%;
+  padding: 2rem;
+}
+.productComment__star {
+  padding: 0 !important;
+  margin: 0 0.02rem !important;
+  cursor: pointer;
+}
+
+.star-main {
+  color: var(--orangeColor);
+}
+.star-grey {
+  color: rgb(197, 197, 197);
+}
+.productComments .user__name {
+  font-weight: 600;
+}
+.productComments .user__comment {
+  font-size: 1.5rem;
+}
+.productComments .user__box {
+  margin-bottom: 2rem;
+}
+.productComments .user__date {
+  font-size: 1.2rem;
+  font-weight: 500;
+  opacity: 0.8;
+  font-style: italic;
+}

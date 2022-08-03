@@ -7,6 +7,7 @@ export default function Mobile() {
   let lang = useSelector((state) => state.lang.lang);
   let [products, setProducts] = useState([]);
   useEffect(() => {
+    // get categroy from url
     getProductsByCategory("mobiles").then((data) => {
       setProducts(data);
       console.log(data);

@@ -1,9 +1,12 @@
 import { db, auth } from "../config";
 import {
   addDoc,
+  arrayUnion,
   collection,
   doc,
+  getDoc,
   getDocs,
+  onSnapshot,
   query,
   updateDoc,
   where,
@@ -43,4 +46,21 @@ export let getProductsByCategory = async (category) => {
   } catch (err) {
     return err.message;
   }
+};
+
+//HANDLE: add comments to product
+export let addProductComment = async (prodId, comment) => {
+  let docRef = doc(db, "products", prodId);
+  let updated = await updateDoc(docRef, {
+    comments: arrayUnion(comment),
+  });
+  return updated;
+};
+
+//HANDLE: get comments of specific prodcut
+export let getProductComments = async (prodiD) => {
+  let docRef = doc(db, "products", prodiD);
+  let product = await getDoc(docRef);
+  let data = product.data();
+  return data.comments;
 };
