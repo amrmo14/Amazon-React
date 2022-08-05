@@ -124,20 +124,28 @@ export default function Cart() {
             Total = product.data.Price * product.data.quant
             cartTotal += Total
             return (
-              <div className=" col-3 p-0 " key={index} >
-                <div className="card m-3 p-0 " >
+              <div className=" col-2 p-0 " key={index} >
+                <div className="card m-3 p-0 h-100" >
                   <Link to={`/productDetails/${product.id}`} className=" p-0 m-0" >
-                    <img src={product.data.Img} className="card-img-top p-5 " height={400} alt="..." />
+                    <img src={product.data.imgs[0]} className="card-img-top p-5 " height={300} alt="..." />
                   </Link>
                   <div className="card-body ">
                     <Link to={`/productDetails/${product.id}`} style={{ color: 'black', textDecoration: 'none' }}>
-                      <h3 className="card-title">{product.data.name}</h3>
+                      <h5 
+                      style={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        display:"-webkit-box",
+                        WebkitLineClamp:"2",
+                        WebkitBoxOrient:"vertical"
+                    }}
+                      className="card-title">{product.data.en.name}</h5>
                     </Link>
 
                     <h2 className=" text-black"><sup>EGP</sup> {product.data.Price}</h2>
-                    <h2 className=" text-black">Quantity : {product.data.quant}</h2>
-                    <h2 className=" text-black">Total price: <sup>EGP</sup>
-                      {Total}</h2>
+                    <h4 className=" text-black">Quantity : {product.data.quant}</h4>
+                    <h4 className=" text-black">Total price: <sup>EGP</sup>
+                      {Total}</h4>
                     <div className="row justify-content-around">
                       <button type="button" className="btn btn-warning col-2" onClick={() => removeOne(product)}>-</button>
                       <button type="button" className="btn btn-danger col-6" onClick={() => removeFromCart(product)}>remove</button>
