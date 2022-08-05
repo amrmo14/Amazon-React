@@ -11,6 +11,7 @@ import { updateDoc } from "firebase/firestore";
 import { CartContext } from '../context/cartContext';
 import "./productDetails.css";
 import LocalizedStrings from "react-localization";
+import currencyFormat from "./../handleMoney";
 
 const ProductDetails = (props) => {
 
@@ -23,6 +24,9 @@ const ProductDetails = (props) => {
     let lang = useSelector((state) => state.lang.lang);
     let activeImg = useRef();
     let dispatch = useDispatch();
+    let [quantity, setQuantity] = useState(1);
+    let [error, setError] = useState("");
+    let space = "  ";
     let pageData = new LocalizedStrings({
         en: {
           product: { ...product },
@@ -45,9 +49,6 @@ const ProductDetails = (props) => {
           shipsBy: "يباع من",
         },
       });
-      let [quantity, setQuantity] = useState(1);
-      let [error, setError] = useState("");
-      let space = "  ";
       //HANDLE: Delivery Date
       let dateNow = new Date();
       dateNow.setDate(dateNow.getDate() + 3);
@@ -87,6 +88,7 @@ const ProductDetails = (props) => {
       };
       let handleQuantity = (e) => {
         setQuantity(e.target.value);
+        console.log(quantity)
       };
       pageData.setLanguage(lang);
  
@@ -97,11 +99,11 @@ const ProductDetails = (props) => {
                 id: doc.id,
                 data: doc.data()
             }])
-            console.log("details",)
+            console.log(pageData)
         })
     }, [])
 
-   async function addToCart(product) {
+   async function addToCart(product,quantity) {
         // setCart([product.data])
         console.log("p", product)
         if (isUser) {
@@ -110,7 +112,7 @@ const ProductDetails = (props) => {
                 const userDocRef = doc(db, 'users', userId)
                 if (cart.length == 0) {
                    await updateDoc(userDocRef, {
-                        cart: [...cart, { data: { ...product.data, quant: 1 }, id: product.id }],
+                        cart: [...cart, { data: { ...product.data, quant: Number(quantity) }, id: product.id }],
                     })
                     console.log("ff", cart)
                 }
@@ -133,7 +135,7 @@ const ProductDetails = (props) => {
         console.log("333")
         cart.forEach(item => {
             if (item.id == product.id) {
-                item.data.quant = Number(item.data.quant) + 1
+                item.data.quant = Number(item.data.quant) + Number(quantity)
                 console.log(item.data.quant)
                 cart.splice(cart.findIndex((ele) => { return ele.id == item.id }), 1);
                 updateFoundedinCart(product,item.data.quant)
@@ -155,7 +157,7 @@ const ProductDetails = (props) => {
     const updateNotinCart = async (product) => {
         const userDocRef = await doc(db, 'users', userId)
        await updateDoc(userDocRef, {
-            cart: [...cart, { data: { ...product.data, quant: 1 }, id: product.id }]
+            cart: [...cart, { data: { ...product.data, quant: Number(quantity) }, id: product.id }]
         })
 
     }
@@ -181,12 +183,12 @@ const ProductDetails = (props) => {
                               className="gallery__slider d-flex flex-column align-items-center "
                               onMouseOver={(e) => handleMouseOver(e)}
                             >
-                              {/* {pageData.product.imgs.map((img, index) => (
-                                <img src={img} key={index} />
-                              ))} */}
+                              {pageData.product[0].data.imgs.map((img, index) => (
+                                <img src={img} key={index}  className="img-fluid"/>
+                              ))} 
                             </div>
                             <div className="gallery__active d-flex justify-content-center align-items-center">
-                              <img src={product.data.Img} 
+                              <img src={product.data.imgs[0]} 
                               ref={activeImg} 
                               />
                             </div>
@@ -194,17 +196,17 @@ const ProductDetails = (props) => {
                         </div>
                         <div className="col-md-5">
                           <div className="productInfo d-flex flex-column align-items-start">
-                            <h3 className="productInfo__title">{product.data.name}</h3>
+                            <h3 className="productInfo__title">{product.data[lang].name}</h3>
                             <p className="productInfo__brand">
-                              Brand : {product.data.Brand}
+                              Brand : {product.data[lang].Brand}
                             </p>
                             <div className="dash"></div>
-                            {/* {pageData.product.discount ? (
+                           {pageData.product[0].data.Discount ? (
                               <div className="productInfo__price">
                                 <p className="productInfo__was">
                                   {lang == "en" ? "Was:" : "كان :"}{" "}
                                   <span>
-                                    {currencyFormat(pageData.product.price)}
+                                    {currencyFormat(pageData.product[0].data.Price)}
                                     {space}
                                     {pageData.curreny}
                                   </span>
@@ -213,9 +215,9 @@ const ProductDetails = (props) => {
                                   {lang == "en" ? "With Deal:" : "مع العرض"}
                                   <span>
                                     {currencyFormat(
-                                      pageData.product.price -
-                                        pageData.product.price *
-                                          (pageData.product.discount / 100)
+                                      pageData.product[0].data.Price -
+                                      pageData.product[0].data.Price *
+                                          (pageData.product[0].data.Discount / 100)
                                     )}
                                     {space}
                                     {pageData.curreny}
@@ -224,10 +226,10 @@ const ProductDetails = (props) => {
                                 <p className="productInfo__save">
                                   {lang == "en" ? "You Save:" : "الخصم: "}
                                   <span>
-                                    ({pageData.product.discount}%)
+                                    ({pageData.product[0].data.Discount}%)
                                     {currencyFormat(
-                                      pageData.product.price *
-                                        (pageData.product.discount / 100)
+                                      pageData.product[0].data.Price *
+                                        (pageData.product[0].data.Price / 100)
                                     )}
                                     {space}
                                     {pageData.curreny}
@@ -240,31 +242,31 @@ const ProductDetails = (props) => {
                                 <span>
                                   {pageData.curreny}
                                   {space}
-                                  {currencyFormat(pageData.product.price)}
+                                  {currencyFormat(pageData.product[0].data.Price)}
                                 </span>
                               </p>
-                            )} */}
+                            )} 
                             <div className="dash"></div>
-                            {/* <div className="productInfo__prop">
-                              {pageData.product.properties.map((prop, index) => (
+                            <div className="productInfo__prop">
+                              {pageData.product[0].data[lang].Description.map((prop, index) => (
                                 <p className="productInfo__prop-box" key={index}>
                                   <span>{prop.name}</span>: {prop.value}
                                 </p>
                               ))}
-                            </div> */}
+                            </div>
                           </div>
                         </div>
                         <div className="col-md-2">
                           <div className="processing">
                             <>
-                              {/* <h5 className="processing__price">
-                                {pageData.product.discount
+                              <h5 className="processing__price">
+                                {pageData.product[0].data.Discount
                                   ? currencyFormat(
-                                      pageData.product.price -
-                                        pageData.product.price *
-                                          (pageData.product.discount / 100)
+                                      pageData.product[0].data.Price -
+                                        pageData.product[0].data.Price *
+                                          (pageData.product[0].data.Discount / 100)
                                     )
-                                  : currencyFormat(pageData.product.price)}
+                                  : currencyFormat(pageData.product[0].data.Price)}
                                 {space}
                                 {pageData.curreny}
                               </h5>
@@ -280,11 +282,11 @@ const ProductDetails = (props) => {
                                     {}
                                   </span>
                                 )}
-                              </p> */}
-                              {/* <div className="processing__quantityBox mb-5">
+                              </p> 
+                               <div className="processing__quantityBox mb-5">
                                 <p className="m-0">{pageData.quantity}</p>
                                 <select className="mx-4" onChange={(e) => handleQuantity(e)}>
-                                  {new Array(pageData.product.quantity)
+                                  {new Array(pageData.product[0].data.Quantity)
                                     .fill(0)
                                     .map((num, index) => (
                                       <option value={index + 1} key={index}>
@@ -292,11 +294,11 @@ const ProductDetails = (props) => {
                                       </option>
                                     ))}
                                 </select>
-                              </div> */}
+                              </div> 
                               <div className="btns my-4 d-flex flex-column align-items-center justify-content-center ">
                                 <button
                                   className="w-100 customBtn secondaryBtn"
-                                  onClick={() => addToCart(product)}
+                                  onClick={() => addToCart(product,quantity)}
                                 >
                                   {pageData.addToCart}
                                   {/* add to cart */}
@@ -315,10 +317,10 @@ const ProductDetails = (props) => {
                                 </button>
                               </div>
                               <p className="processing__seller">
-                                {/* {pageData.shipsFrom}: <span>{product.en.shipsFrom}</span> */}
+                                {pageData.shipsFrom}: <span>{product.data.ShipsFrom}</span>
                               </p>
                               <p className="processing__seller">
-                                {/* {pageData.shipsBy}: <span>{product.en.seller}</span> */}
+                                {pageData.shipsBy}: <span>{product.data.Seller}</span>
                               </p>
                             </>
                           </div>
