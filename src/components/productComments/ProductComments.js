@@ -76,7 +76,9 @@ export default function ProductComments() {
   return (
     <>
       <div className="productComments w-100" dir={lang == "en" ? "ltr" : "rtl"}>
-        <h2 className="mb-5">{pageData.title}</h2>
+        <h2 className="mb-5">
+          {pageData.title} ({comments && comments.length})
+        </h2>
         {/* HANDLE: display comments and rating*/}
         {comments ? (
           comments.map((userComment, index) => (

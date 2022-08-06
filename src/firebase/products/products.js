@@ -7,6 +7,7 @@ import {
   getDoc,
   getDocs,
   onSnapshot,
+  orderBy,
   query,
   updateDoc,
   where,
@@ -71,4 +72,56 @@ export let getProductById = async (id) => {
   let productRef = await getDoc(docRef);
   let product = productRef.data();
   return product;
+};
+
+//HANDLE: get products bt user id
+export let getProductsByUserId = async (userId) => {
+  let q = query(productsRef, where("sellerID", "==", userId));
+  let products = (await getDocs(q)).docs.map((doc) => doc.data());
+  return products;
+};
+
+//HANDLE: search for product depending on documnt fields and it's value
+export let getProductsWithFields = async (fieldName, fieldValue, lang) => {
+  switch (fieldName) {
+    case "price":
+    case "discount": {
+      let q = query(
+        productsRef,
+        where(
+          fieldName == "price" ? "en.price" : fieldName,
+          "<=",
+          Number(fieldValue)
+        )
+      );
+      let products = (await getDocs(q)).docs.map((doc) => doc.data());
+      return products;
+      break;
+    }
+    case "category":
+      console.log(fieldName, fieldValue);
+      let q = query(productsRef, where("en.category", "==", fieldValue));
+      let products = (await getDocs(q)).docs.map((doc) => doc.data());
+      return products;
+  }
+};
+
+// HANDLE: Filter products
+export let filterProducts = async (fieldName) => {
+  let q;
+  let products;
+  if (fieldName == "mostSold") {
+    q = query(productsRef, orderBy("soldQuantity"));
+    products = (await getDocs(q)).docs.map((doc) => doc.data()).reverse();
+  } else if (fieldName == "lowestSold") {
+    q = query(productsRef, orderBy("soldQuantity"));
+    products = (await getDocs(q)).docs.map((doc) => doc.data());
+  } else if (fieldName == "price") {
+    q = query(productsRef, orderBy("en.price"));
+    products = (await getDocs(q)).docs.map((doc) => doc.data()).reverse();
+  } else if (fieldName == "discount") {
+    q = query(productsRef, orderBy("discount"));
+    products = (await getDocs(q)).docs.map((doc) => doc.data()).reverse();
+  }
+  return products;
 };

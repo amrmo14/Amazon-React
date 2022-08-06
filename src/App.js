@@ -23,6 +23,7 @@ import SellerDashboard from "./pages/sellerDashboard/SellerDashboard";
 import PrivateRoute from "./components/RedirectWrapper/RedirectWrapper";
 import AccountInfo from "./pages/AccountInfo/AccountInfo";
 import Mobile from "./pages/categories/mobile/Mobile";
+import ProductsDashboard from "./pages/ProductsDashboard/ProductsDashboard";
 let stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 function App() {
   return (
@@ -45,6 +46,11 @@ function App() {
                 <Route path="/sellerLogin" exact component={SellerLogin} />
                 <Route path="/sellerSignup" exact component={sellerSignUp} />
                 <Route path="/mobile" exact component={Mobile} />
+                <PrivateRoute
+                  path="/:id/productsDashboard"
+                  exact
+                  component={ProductsDashboard}
+                />
                 <PrivateRoute
                   path="/sellerDashboard"
                   exact
