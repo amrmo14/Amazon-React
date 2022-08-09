@@ -6,24 +6,18 @@ import {
   getProductsWithFields,
 } from "../../firebase/products/products";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import "./productsDashboard.css";
 export default function ProductsDashboard() {
   let [products, setProducts] = useState([]);
   let [search, setSearch] = useState("");
   let [selectValue, setSelectValue] = useState("");
-  let [searchType, setSearchType] = useState([
-    "name",
-    "price",
-    "category",
-    "quantity",
-  ]);
+  let [searchType, setSearchType] = useState(["price", "category", "discount"]);
   let [sidebar, setSidebar] = useState([
     "mostSold",
     "lowestSold",
     "price",
     "discount",
-    "theAvailable",
-    "notAvailable",
   ]);
   let [sideValue, setSideValue] = useState("");
   useEffect(() => {
@@ -42,25 +36,21 @@ export default function ProductsDashboard() {
           images: product.images,
           quantity: product.quantity,
           soldQuantity: product.soldQuantity,
+          productID: product.productID,
+          price: product.price,
         };
       }),
       title: "Products Management Dashboard",
       search_placeholder: "Search for specific product",
       select_placeholder: "Search Type",
-      select_type: ["Name", "Price", "Category", "Quantity"],
+      select_type: ["Price", "Category", "Discount"],
       moreControl: "More Control ?",
-      sidebar: [
-        "Most Sold",
-        "lowest Sold",
-        "Price",
-        "Discount",
-        "The Available",
-        "Not Available",
-      ],
+      sidebar: ["Most Sold", "lowest Sold", "Price", "Discount"],
       price: "Price",
       quantity: "Quantity",
       discount: "Discount",
       ui_avQuantity: "Available Quantity",
+      addProduct: "Add New Product",
     },
     ar: {
       products: products.map((product) => {
@@ -72,25 +62,21 @@ export default function ProductsDashboard() {
           images: product.images,
           quantity: product.quantity,
           soldQuantity: product.soldQuantity,
+          productID: product.productID,
+          price: product.price,
         };
       }),
       title: "ادارة المنتجات",
       search_placeholder: "ابحث عن منتج معين",
       select_placeholder: "حدد النوع",
-      select_type: ["الاسم", "السعر", "القسم", "التخفيض"],
+      select_type: ["السعر", "القسم", "التخفيض"],
       moreControl: "تحكم أكثر؟",
-      sidebar: [
-        "الاكثر مبيعا",
-        "الاقل مبيعا",
-        "الاغلي",
-        "الخصومات",
-        "المتاح",
-        "الغير متاح",
-      ],
+      sidebar: ["الاكثر مبيعا", "الاقل مبيعا", "الاغلي", "الخصومات"],
       price: "السعر",
       quantity: "الكمية",
       discount: "الخصم",
       ui_avQuantity: "الكمية المتاحة",
+      addProduct: "اضافة منتج جديد",
     },
   });
   let lang = useSelector((state) => state.lang.lang);
@@ -125,7 +111,17 @@ export default function ProductsDashboard() {
       }`}
       dir={lang == "en" ? "ltr" : "rtl"}
     >
-      <h2>{page.title}</h2>
+      <div className="d-flex justify-content-between align-items-center">
+        <h2>{page.title}</h2>
+        <button className="btn btn-danger px-5 py-3 fs-4">
+          <Link
+            to={`/seller/${localStorage.getItem("userId")}`}
+            className="addProduct__link"
+          >
+            {page.addProduct}
+          </Link>
+        </button>
+      </div>
       <div className="row">
         {/* HANDLE: LEFT seciton */}
         <div className="col-md-2 productsDashboard__right ">
@@ -184,32 +180,46 @@ export default function ProductsDashboard() {
           </div>
           {/* ------------------------------------------------------------------------- */}
           {/* HANDLE: Product */}
-          <div className="row gx-4 ">
+          <div className="row g-2 ">
             {products.length > 0 ? (
               page.products.map((product, index) => (
-                <div
-                  key={index}
-                  className="col-md-3 d-flex flex-column justify-content-center align-items-start customProduct "
-                >
-                  <img src={product.images[0]} className="align-self-center" />
-                  <h3>{product.name.split(" ").slice(0, 10).join(" ")} ....</h3>
-                  <p className="fs-4 my-3">
-                    {page.price}: <span className="fs-5">{product.price}</span>
-                  </p>
-                  <p className="fs-4 my-2">
-                    {page.discount}:{" "}
-                    <span className="fs-5">{product.discount} %</span>
-                  </p>
-                  <p className="fs-4 my-2">
-                    {page.quantity}:{" "}
-                    <span className="fs-5">{product.quantity}</span>
-                  </p>
-                  <p className="fs-4 my-2">
-                    {page.ui_avQuantity}:{" "}
-                    <span className="fs-5">{product.availablyQuaintity}</span>
-                  </p>
-                  <div className="d-flex align-items-end justify-content-end w-100 justify-self-end mt-auto">
-                    <i className="fa-solid fa-pen-to-square text-danger fs-3 align-self-end customEdit"></i>
+                <div className="col-md-3">
+                  <div
+                    key={index}
+                    className="d-flex flex-column justify-content-between align-items-start customProduct "
+                  >
+                    <img
+                      src={product.images[0]}
+                      className="align-self-center"
+                    />
+                    <h3>
+                      {product.name.split(" ").slice(0, 10).join(" ")} ....
+                    </h3>
+                    <div className="row mt-auto ">
+                      <p className=" col-6 fs-4 my-3">
+                        {page.price}:{" "}
+                        <span className="fs-5">{product.price}</span>
+                      </p>
+                      <p className=" col-6 fs-4 my-2">
+                        {page.discount}:{" "}
+                        <span className="fs-5">{product.discount} %</span>
+                      </p>
+                      <p className=" col-6 fs-4 my-2">
+                        {page.quantity}:{" "}
+                        <span className="fs-5">{product.quantity}</span>
+                      </p>
+                      <p className=" col-6 fs-4 my-2">
+                        {page.ui_avQuantity}:{" "}
+                        <span className="fs-5">
+                          {product.availablyQuaintity}
+                        </span>
+                      </p>
+                    </div>
+                    <div className="d-flex align-items-end justify-content-end w-100 justify-self-end ">
+                      <Link to={`/editProduct/${product.productID}`}>
+                        <i className="fa-solid fa-pen-to-square text-danger fs-3 align-self-end customEdit"></i>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               ))

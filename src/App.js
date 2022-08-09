@@ -24,6 +24,7 @@ import PrivateRoute from "./components/RedirectWrapper/RedirectWrapper";
 import AccountInfo from "./pages/AccountInfo/AccountInfo";
 import Mobile from "./pages/categories/mobile/Mobile";
 import ProductsDashboard from "./pages/ProductsDashboard/ProductsDashboard";
+import EditProduct from "./pages/editProduct/EditProduct";
 let stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 function App() {
   return (
@@ -46,6 +47,11 @@ function App() {
                 <Route path="/sellerLogin" exact component={SellerLogin} />
                 <Route path="/sellerSignup" exact component={sellerSignUp} />
                 <Route path="/mobile" exact component={Mobile} />
+                <PrivateRoute
+                  path="/editProduct/:productID"
+                  exact
+                  component={EditProduct}
+                />
                 <PrivateRoute
                   path="/:id/productsDashboard"
                   exact

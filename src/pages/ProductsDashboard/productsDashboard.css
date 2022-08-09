@@ -11,7 +11,13 @@
 .productsDashboard__ar {
   font-family: "Almarai";
 }
-
+.addProduct__link {
+  color: white;
+  text-decoration: none;
+}
+.addProduct__link:hover {
+  color: white;
+}
 .productsDashboard h2 {
   font-size: 4rem;
   margin: 6rem 3rem;
@@ -21,13 +27,14 @@
 }
 .productsDashboard__left .customProduct {
   /* max-height: 40rem; */
-  height: auto;
-  padding: 2rem;
+  height: 100%;
+  padding: 2rem 1rem;
   box-shadow: 0.1rem 0.1rem 0.5rem rgba(0, 0, 0, 0.207);
   border-radius: 1rem;
+  margin: 0 0.5rem;
 }
 .productsDashboard__left .customProduct img {
-  height: 25rem;
+  height: 20rem;
   margin-bottom: 2rem;
 }
 .productsDashboard__left .customEdit {

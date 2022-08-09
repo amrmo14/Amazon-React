@@ -61,12 +61,13 @@ export default function AddProduct() {
         getDownloadURL(uploadedImg.ref).then((url) => {
           urls.push(url);
           console.log(urls);
-          uploadImgs(productId, urls);
-          setProcess(pageData.success);
-          setTimeout(() => {
-            setProcess("");
-            formik.resetForm();
-          }, 2000);
+          uploadImgs(productId, urls).then(() => {
+            setProcess(pageData.success);
+            setTimeout(() => {
+              setProcess("");
+              formik.resetForm();
+            }, 2000);
+          });
         });
       });
     });
@@ -95,11 +96,8 @@ export default function AddProduct() {
     } else if (values.ar.name.length < 10) {
       errors.name_ar = "أسم المنتج غير كافي!";
     }
-    if (!values.en.price) {
-      errors.price_en = "Price is required";
-    }
-    if (!values.ar.price) {
-      errors.price_ar = "سعر المنتج غير موجود";
+    if (!values.price) {
+      errors.price = "Price is required !/سعر المنتج غير موجود";
     }
     if (!values.en.brand) {
       errors.brand_en = "Brand is required";
@@ -132,17 +130,16 @@ export default function AddProduct() {
       en: {
         name: "",
         brand: "",
-        price: 0,
         properities: [],
         category: "",
       },
       ar: {
         name: "",
         brand: "",
-        price: 0,
         properities: [],
         category: "",
       },
+      price: 0,
       discount: 0,
       imgs: [],
       quantity: 1,
@@ -152,11 +149,11 @@ export default function AddProduct() {
     validate,
     onSubmit: (values) => {
       values.availablyQuaintity = values.quantity;
+      values.price = Number(values.price);
+      values.discount = Number(values.discount);
       setProcess(pageData.wait);
-      console.log(values);
       addProduct(values)
         .then((prodID) => {
-          console.log(prodID);
           onUpload(prodID);
           //---------------------- START: Reset UI
           setImgs([]);
@@ -222,7 +219,7 @@ export default function AddProduct() {
   return (
     <div className={`seller_addProduct `}>
       <div className="row mt-5">
-        <div className="col-md-6 english__left">
+        <div className="col-md-6 english__left d-flex flex-column justify-content-around">
           <h3 className="seller__addProduct-title">Add New Product</h3>
           <form
             className="px-4"
@@ -249,25 +246,7 @@ export default function AddProduct() {
                 </small>
               )}
             </div>
-            <div className="mb-3">
-              <label htmlFor="english__price" className="english__label">
-                <span className="text-danger">*</span>Price
-              </label>
-              <input
-                className="form-control w-25 seller__addProduct-input"
-                type="number"
-                id="english__price"
-                min="1"
-                value={formik.values.en.price}
-                name="en.price"
-                onChange={formik.handleChange}
-              />
-              {formik.errors.price_en && (
-                <small className="text-danger py-2 d-block fs-5">
-                  {formik.errors.price_en}
-                </small>
-              )}
-            </div>
+
             <div className="mb-3">
               <label htmlFor="english__brand" className="english__label">
                 <span className="text-danger">*</span>Brand
@@ -388,20 +367,20 @@ export default function AddProduct() {
             </div>
             <div className="mb-3">
               <label htmlFor="arabic__price" className="arabic__label">
-                <span className="text-danger">*</span>السعر
+                <span className="text-danger">*</span> Price / السعر
               </label>
               <input
                 className="form-control w-25 seller__addProduct-input"
                 type="number"
                 id="arabic__price"
                 min="1"
-                value={formik.values.ar.price}
-                name="ar.price"
+                value={formik.values.price}
+                name="price"
                 onChange={formik.handleChange}
               />
-              {formik.errors.price_ar && (
+              {formik.errors.price && (
                 <small className="text-danger py-2 d-block fs-5">
-                  {formik.errors.price_ar}
+                  {formik.errors.price}
                 </small>
               )}
             </div>

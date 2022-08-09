@@ -63,7 +63,10 @@ export default function SellerDashboard() {
               </button>
             </Link>
             {permission && localStorage.getItem("role") == "seller" && (
-              <Link to="" className="dashboard__left-link">
+              <Link
+                to={`/${localStorage.getItem("userId")}/productsDashboard`}
+                className="dashboard__left-link"
+              >
                 <button className="dashboard__left-btn">
                   {pageDate.products}
                 </button>

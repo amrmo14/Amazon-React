@@ -33,6 +33,7 @@ export default function ProductDetails() {
         sellerId: prodFromFire.sellerID,
         discount: prodFromFire.discount,
         sellerID: prodFromFire.sellerID,
+        price: prodFromFire.price,
       },
     },
     ar: {
@@ -51,6 +52,7 @@ export default function ProductDetails() {
         sellerId: prodFromFire.sellerID,
         discount: prodFromFire.discount,
         sellerID: prodFromFire.sellerID,
+        price: prodFromFire.price,
       },
     },
   });
