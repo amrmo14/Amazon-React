@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux/es/exports";
 import LocalizedStrings from "react-localization";
 import "./payment.css";
@@ -7,16 +7,24 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
 import { useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
+import { getProductById } from "../../firebase/products/products";
 export default function Payment() {
   let lang = useSelector((state) => state.lang.lang);
   let [error, setError] = useState("");
   let [paymentState, setPaymentState] = useState("");
+  let [productPrice, setProductPrice] = useState(0);
   let params = useParams();
   let location = useLocation();
   let prodId = params.id;
   let quantity = location.search.split("=")[1];
   let stripe = useStripe();
   let element = useElements();
+  useEffect(() => {
+    getProductById(prodId).then((data) => {
+      console.log(data);
+      setProductPrice(data.Price);
+    });
+  }, []);
   // HANDLE: card value cahnge
   let handleCardChange = (e) => {
     if (!e.complete) {
@@ -132,7 +140,7 @@ export default function Payment() {
       try {
         //2) handle payment intent with static amount
         let paymentIntent = await axios.post("http://localhost:5000/payments", {
-          amount: 5 * quantity * 100,
+          amount: productPrice * quantity * 100,
         });
         //3) handle payment method
         let paymentMethodObj = stripe.createPaymentMethod({

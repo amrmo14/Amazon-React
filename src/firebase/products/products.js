@@ -20,7 +20,7 @@ export let addProduct = async (newProduct) => {
   try {
     let docRef = await addDoc(productsRef, {
       ...newProduct,
-      images: [],
+      imgs: [],
       sellerID: localStorage.getItem("userId"),
     });
     return docRef.id;
@@ -32,7 +32,7 @@ export let addProduct = async (newProduct) => {
 export let uploadImgs = async (productID, newUrlImg) => {
   let docRef = doc(db, "products", productID);
   await updateDoc(docRef, {
-    images: newUrlImg,
+    imgs: newUrlImg,
   });
 };
 
@@ -40,7 +40,7 @@ export let uploadImgs = async (productID, newUrlImg) => {
 export let getProductsByCategory = async (category) => {
   try {
     let products = [];
-    let q = query(productsRef, where("en.category", "==", category));
+    let q = query(productsRef, where("ar.category", "==", category));
     let docsRef = await getDocs(q);
     products = docsRef.docs.map((doc) => doc.data());
     return products;

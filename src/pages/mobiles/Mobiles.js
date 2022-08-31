@@ -16,35 +16,11 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./Electronics.css";
 
-const Electronics = () => {
+const Mobiles = () => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   let lang = useSelector((state) => state.lang.lang);
   useEffect(() => {
-    // onSnapshot(q2, (querySnapshot) => {
-    //   setProducts(
-    //     querySnapshot.docs.map((doc) => ({
-    //       id: doc.id,
-    //       data: doc.data(),
-    //     }))
-    //   );
-    // });
-    const q = query(
-      collection(db, "products"),
-      where("CateogryID", "==", "8"),
-      // orderBy("id", "desc"),
-      limit(12)
-    );
-
-    onSnapshot(q, (querySnapshot) => {
-      setProducts(
-        querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          data: doc.data(),
-        }))
-      );
-    });
-
     let q2 = query(
       collection(db, "products"),
       where("ar.category", "==", "electronics")
@@ -53,11 +29,11 @@ const Electronics = () => {
       data.docs.forEach((d) => {
         setProducts((prevState) => {
           return [
+            ...prevState,
             {
               id: d.id,
               data: d.data(),
             },
-            ...prevState,
           ];
         });
       });
@@ -130,8 +106,7 @@ const Electronics = () => {
           </h2>
           <div className="row justify-content-around electronics ">
             {products.map((product, index) => {
-              // if (product.data.CateogryID == 8) {
-              if (true) {
+              if (product.data.CateogryID == 8) {
                 return (
                   <div className=" col-md-3 p-3 " key={index}>
                     <div className="card m-3 p-0 h-100">
@@ -164,12 +139,10 @@ const Electronics = () => {
                             }}
                             className="card-title"
                           >
-                            {product.data[lang].name}
+                            {product.data.en.name}
                           </h5>
                         </Link>
-                        <h5 className="card-title">
-                          {product.data[lang].Brand}
-                        </h5>
+                        <h5 className="card-title">{product.data.en.Brand}</h5>
                         <h2 className=" text-black">
                           <sup>EGP</sup> {product.data.Price}
                         </h2>

@@ -73,11 +73,11 @@ export default function SellerDashboard() {
               </Link>
             )}
 
-            <Link to="" className="dashboard__left-link">
+            {/* <Link to="" className="dashboard__left-link">
               <button className="dashboard__left-btn">
                 {pageDate.purchases}
               </button>
-            </Link>
+            </Link> */}
             <button
               className="dashboard__left-btn"
               onClick={() => handleLogout()}

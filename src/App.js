@@ -25,6 +25,7 @@ import AccountInfo from "./pages/AccountInfo/AccountInfo";
 import Mobile from "./pages/categories/mobile/Mobile";
 import ProductsDashboard from "./pages/ProductsDashboard/ProductsDashboard";
 import EditProduct from "./pages/editProduct/EditProduct";
+import Category from "./pages/category/Category";
 let stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 function App() {
   return (
@@ -36,14 +37,15 @@ function App() {
             <Navbar />
             <div className="container-fluid px-5 appContainer">
               <Switch>
-                <Route path="/electronics" component={Electronics} exact />
+                {/* <Route path="/electronics" component={Electronics} exact /> */}
+                <Route path="/category/:category" component={Category} exact />
                 <Route
                   path="/electronics/:id"
                   component={ProductDetails}
                   exact
                 />
-                <Route path="/cart" exact component={Cart} />
-                <Route path="/seller/:id" exact component={AddProduct} />
+                <PrivateRoute path="/cart" exact component={Cart} />
+                <PrivateRoute path="/seller/:id" exact component={AddProduct} />
                 <Route path="/sellerLogin" exact component={SellerLogin} />
                 <Route path="/sellerSignup" exact component={sellerSignUp} />
                 <Route path="/mobile" exact component={Mobile} />

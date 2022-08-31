@@ -37,8 +37,8 @@ export default function EditProduct() {
       console.log(data);
       formik.setFieldValue("en", data.en);
       formik.setFieldValue("ar", data.ar);
-      formik.setFieldValue("price", data.price);
-      formik.setFieldValue("discount", data.discount);
+      formik.setFieldValue("Price", data.Price);
+      formik.setFieldValue("Discount", data.Discount);
     });
   }, []);
   let formik = useFormik({
@@ -85,7 +85,7 @@ export default function EditProduct() {
               <input
                 type="text"
                 className="form-control fs-4 px-4 py-2"
-                value={formik.values.en.brand}
+                value={formik.values.en.Brand}
                 name="en.brand"
                 onChange={formik.handleChange}
               />
@@ -115,7 +115,7 @@ export default function EditProduct() {
               <input
                 type="text"
                 className="form-control fs-4 px-4 py-2"
-                value={formik.values.ar.brand}
+                value={formik.values.ar.Brand}
                 name="ar.brand"
                 onChange={formik.handleChange}
               />
@@ -135,8 +135,8 @@ export default function EditProduct() {
               <input
                 type="text"
                 className="form-control fs-4 px-4 py-2"
-                value={formik.values.price}
-                name="price"
+                value={formik.values.Price}
+                name="Price"
                 onChange={formik.handleChange}
               />
             </div>
@@ -145,8 +145,8 @@ export default function EditProduct() {
               <input
                 type="text"
                 className="form-control fs-4 px-4 py-2"
-                value={formik.values.discount}
-                name="discount"
+                value={formik.values.Discount}
+                name="Discount"
                 onChange={formik.handleChange}
               />
             </div>

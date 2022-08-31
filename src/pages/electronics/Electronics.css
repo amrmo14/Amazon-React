@@ -1,0 +1,7 @@
+.electronics a :hover {
+  color: orange !important;
+}
+
+.electronics sup {
+  font-size: 12px;
+}

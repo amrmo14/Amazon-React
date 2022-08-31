@@ -28,12 +28,15 @@ export default function ProductDetails() {
       price: "Price",
       product: {
         ...prodFromFire.en,
-        imgs: prodFromFire.images,
+        imgs: prodFromFire.imgs,
         prodQuanityt: prodFromFire.availablyQuaintity,
         sellerId: prodFromFire.sellerID,
-        discount: prodFromFire.discount,
+        discount: prodFromFire.Discount,
         sellerID: prodFromFire.sellerID,
-        price: prodFromFire.price,
+        price: prodFromFire.Price,
+        quantity: prodFromFire.Quantity,
+        ShipsFrom: prodFromFire.ShipsFrom,
+        Seller: prodFromFire.Seller,
       },
     },
     ar: {
@@ -47,12 +50,15 @@ export default function ProductDetails() {
       price: "السعر",
       product: {
         ...prodFromFire.ar,
-        imgs: prodFromFire.images,
+        imgs: prodFromFire.imgs,
         prodQuanityt: prodFromFire.availablyQuaintity,
         sellerId: prodFromFire.sellerID,
-        discount: prodFromFire.discount,
+        discount: prodFromFire.Discount,
         sellerID: prodFromFire.sellerID,
-        price: prodFromFire.price,
+        price: prodFromFire.Price,
+        quantity: prodFromFire.Quantity,
+        ShipsFrom: prodFromFire.ShipsFrom,
+        Seller: prodFromFire.Seller,
       },
     },
   });
@@ -160,7 +166,7 @@ export default function ProductDetails() {
                 <h3 className="productInfo__title">{page.product.name} </h3>
 
                 <p className="productInfo__brand">
-                  Brand : {page.product.brand}
+                  Brand : {page.product.Brand}
                 </p>
 
                 <div className="dash"></div>
@@ -209,8 +215,8 @@ export default function ProductDetails() {
                 )}
                 <div className="dash"></div>
                 <div className="productInfo__prop">
-                  {page.product.properities &&
-                    page.product.properities.map((prop, index) => (
+                  {page.product.Description &&
+                    page.product.Description.map((prop, index) => (
                       <p className="productInfo__prop-box" key={index}>
                         <span>{prop.name}</span>: {prop.value}
                       </p>
@@ -279,10 +285,10 @@ export default function ProductDetails() {
                     </button>
                   </div>
                   <p className="processing__seller">
-                    {page.shipsFrom}: <span>{page.product.sellerID}</span>
+                    {page.shipsFrom}: <span>{page.product.ShipsFrom}</span>
                   </p>
                   <p className="processing__seller">
-                    {page.shipsBy}: <span>{page.product.sellerID}</span>
+                    {page.shipsBy}: <span>{page.product.Seller}</span>
                   </p>
                 </>
               </div>

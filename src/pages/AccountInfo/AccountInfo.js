@@ -90,6 +90,7 @@ export default function AccountInfo() {
   });
   useEffect(() => {
     getSeller(localStorage.getItem("userId")).then((data) => {
+      console.log(data);
       setSeller(data);
     });
   }, []);
@@ -123,7 +124,10 @@ export default function AccountInfo() {
               </div>
               <div className="mb-5">
                 <p className="mb-1 fw-light fs-5">{pageData.address}</p>
-                <h4 className="fs-3 fw-bold">{seller.address}</h4>
+                <h4 className="fs-3 fw-bold">
+                  {seller.address?.country} {seller.address?.city}{" "}
+                  {seller.address?.street}
+                </h4>
               </div>
               <div className="mb-5">
                 <p className="mb-1 fw-light fs-5">{pageData.phone}</p>
