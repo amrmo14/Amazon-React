@@ -1,0 +1,19 @@
+.purchasePage {
+  padding: 1rem 0;
+  background-color: white;
+  min-height: 70vh;
+}
+
+.purchasePage__title {
+  margin: 4rem 2rem;
+  font-size: 3rem;
+}
+
+.purchasePage__grid-product {
+  padding: 4rem;
+  transition: all 0.3s ease-in;
+  cursor: pointer;
+}
+.purchasePage__grid-product:hover {
+  opacity: 0.7;
+}

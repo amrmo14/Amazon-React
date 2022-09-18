@@ -2,6 +2,7 @@
   background-color: var(--mainColor);
   color: var(--whiteColor);
   padding: 0.8rem 0;
+  width: 100%;
 }
 .customNav ul {
   padding: 0;
@@ -54,4 +55,7 @@ i {
 }
 .nav__lang-en {
   font-family: "Open Sans";
+}
+
+@media only screen and (max-width: 445px) {
 }

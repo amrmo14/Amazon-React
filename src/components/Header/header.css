@@ -134,3 +134,19 @@
   color: white;
   text-decoration: none;
 }
+
+@media only screen and (max-width: 768px) {
+  html {
+    font-size: 8px;
+  }
+  .header__searchInput {
+    width: 35rem;
+    display: none;
+  }
+  .header__form {
+    display: none;
+  }
+  .customContainer {
+    width: 1rem 0.5rem;
+  }
+}

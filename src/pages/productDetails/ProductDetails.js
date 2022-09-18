@@ -69,7 +69,6 @@ export default function ProductDetails() {
   useEffect(() => {
     getProductById(id).then((data) => {
       setProdFromFire(data);
-      console.log(data);
     });
   }, []);
   //HANDLE: Delivery Date

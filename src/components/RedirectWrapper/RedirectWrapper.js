@@ -6,7 +6,8 @@ export default function RedirectWrapper(props) {
   let IS_LOGGED = useSelector((state) => state.isLogged);
   console.log(IS_LOGGED);
 
-  return localStorage.getItem("token") ? (
+  return localStorage.getItem("token") ||
+    localStorage.getItem("amazon_user") ? (
     <Route {...props} />
   ) : (
     <Redirect to="/login" />

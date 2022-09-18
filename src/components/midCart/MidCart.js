@@ -16,7 +16,18 @@ export default function MidCart({ products }) {
       <Swiper
         spaceBetween={5}
         navigation={true}
-        slidesPerView={6}
+        // slidesPerView={6}
+        breakpoints={{
+          320: {
+            slidesPerView: 2,
+          },
+          768: {
+            slidesPerView: 3,
+          },
+          1024: {
+            slidesPerView: 6,
+          },
+        }}
         modules={[Navigation]}
         className="midCart__swiper"
         dir="ltr"

@@ -54,18 +54,13 @@ export default function AddProduct() {
   let urls = [];
 
   let onUpload = (productId) => {
-    console.log(imgs);
     imgs.forEach((img) => {
       let imgName = `${productId}/${img.name + v4()}`;
       let imgRef = ref(storage, `images/${imgName}`);
       uploadBytes(imgRef, img).then((uploadedImg) => {
-        console.log("Add 1");
         getDownloadURL(uploadedImg.ref).then((url) => {
           urls.push(url);
-          console.log("Add 2");
-          console.log(urls);
           uploadImgs(productId, urls).then(() => {
-            console.log("Add 3");
             setProcess(pageData.success);
             setTimeout(() => {
               setProcess("");

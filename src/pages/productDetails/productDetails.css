@@ -135,10 +135,12 @@
 }
 .primaryBtn {
   background-color: var(--mainColor);
+  color: white !important;
 }
 
 .secondaryBtn {
-  background-color: orangered;
+  background-color: orangered !important;
+  color: white !important;
 }
 .processing__seller {
   font-size: 1.4rem;

@@ -128,8 +128,8 @@ export default function Navbar() {
           ))}
         </ul>
       </nav>
-      <Sidebar />
-      {isOpen && <NestedSidebar />}
+      {/* <Sidebar />
+      {isOpen && <NestedSidebar />} */}
     </>
   );
 }

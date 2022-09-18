@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useState } from "react";
 import LocalizedStrings from "react-localization";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getProductsByCategory } from "../../firebase/products/products";
 import currencyFormat from "../../components/handleMoney";
 import "./category.css";
@@ -22,6 +22,7 @@ export default function Category() {
         quantity: product.Quantity,
         ShipsFrom: product.ShipsFrom,
         Seller: product.Seller,
+        productID: product.productID,
       })),
       price: "السعر",
       more: "المزيد",
@@ -39,6 +40,7 @@ export default function Category() {
         quantity: product.Quantity,
         ShipsFrom: product.ShipsFrom,
         Seller: product.Seller,
+        productID: product.productID,
       })),
       price: "Price",
       more: "Details",
@@ -94,10 +96,20 @@ export default function Category() {
               </div>
 
               <div className="product__info">
-                <h3>{product.name.split(" ").splice(0, 15).join(" ")}...</h3>
+                <h3>{product.name.split(" ").splice(0, 10).join(" ")}...</h3>
                 <p>
                   {pageData.price} <span>${product.price}</span>
                 </p>
+                <div className="d-flex justify-content-end">
+                  <button className={`product__info-details`}>
+                    <Link
+                      to={`/product/${product.productID}`}
+                      className="product__info-link"
+                    >
+                      {pageData.more}
+                    </Link>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

@@ -20,7 +20,18 @@ export default function SmallCart({ products, title_en, title_ar }) {
       <Swiper
         navigation={true}
         modules={[Navigation]}
-        slidesPerView={6}
+        // slidesPerView={6}
+        breakpoints={{
+          320: {
+            slidesPerView: 2,
+          },
+          768: {
+            slidesPerView: 3,
+          },
+          1024: {
+            slidesPerView: 6,
+          },
+        }}
         spaceBetween={30}
         dir="ltr"
       >

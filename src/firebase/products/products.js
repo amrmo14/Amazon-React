@@ -42,7 +42,10 @@ export let getProductsByCategory = async (category) => {
     let products = [];
     let q = query(productsRef, where("ar.category", "==", category));
     let docsRef = await getDocs(q);
-    products = docsRef.docs.map((doc) => doc.data());
+    products = docsRef.docs.map((doc) => ({
+      ...doc.data(),
+      productID: doc.id,
+    }));
     return products;
   } catch (err) {
     return err.message;

@@ -199,11 +199,10 @@ export default function Header() {
             </Link>
           </button>
         )} */}
-        {IS_LOGGED ? (
+        {IS_LOGGED || localStorage.getItem("amazon_user") ? (
           <button className="header__loginBtn">
-            <Link to="/sellerDashboard" className="header__loginBtn-link">
-              {lang == "en" ? "Welcome " : " مرحبا "}
-              <span>{user.name}</span>
+            <Link to="/user" className="header__loginBtn-link">
+              {lang == "en" ? "Profile" : "الملف الشخصي"}
             </Link>
           </button>
         ) : (

@@ -8,11 +8,13 @@ import axios from "axios";
 import { useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { getProductById } from "../../firebase/products/products";
+import { getUserById, updateUserPurshase } from "../../firebase/users/users";
 export default function Payment() {
   let lang = useSelector((state) => state.lang.lang);
   let [error, setError] = useState("");
   let [paymentState, setPaymentState] = useState("");
   let [productPrice, setProductPrice] = useState(0);
+  let [user, setUser] = useState({});
   let params = useParams();
   let location = useLocation();
   let prodId = params.id;
@@ -20,8 +22,12 @@ export default function Payment() {
   let stripe = useStripe();
   let element = useElements();
   useEffect(() => {
+    if (localStorage.getItem("amazon_user")) {
+      getUserById(localStorage.getItem("amazon_user")).then((data) => {
+        setUser(data);
+      });
+    }
     getProductById(prodId).then((data) => {
-      console.log(data);
       setProductPrice(data.Price);
     });
   }, []);
@@ -160,6 +166,7 @@ export default function Payment() {
           setPaymentState(formStrings.failed);
           return;
         }
+        updateUserPurshase(localStorage.getItem("amazon_user"), prodId);
         setPaymentState(formStrings.success);
         setTimeout(() => {
           setPaymentState("");

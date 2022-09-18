@@ -1,19 +1,15 @@
 import "./App.css";
 import { Route, Switch, BrowserRouter as Router } from "react-router-dom";
-import Navbar from "./components/Navbar/Navbar";
-import Sidebar from "./components/Sidebar/Sidebar";
 import { Provider, useDispatch } from "react-redux";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 import store from "./store/store/store";
-import lang_action from "./store/actions/lang";
-import { useState } from "react";
 import Home from "./pages/Home/Home";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
-import Electronics from "./pages/electronics/Electronics";
 import ProductDetails from "./pages/productDetails/ProductDetails";
 import Cart from "./pages/cart/Cart";
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
+import Navbar from "./components/Navbar/Navbar";
 import Payment from "./pages/payment/Payment";
 import AddProduct from "./pages/seller_addProduct/AddProduct";
 import login from "./pages/login/login";
@@ -26,6 +22,9 @@ import Mobile from "./pages/categories/mobile/Mobile";
 import ProductsDashboard from "./pages/ProductsDashboard/ProductsDashboard";
 import EditProduct from "./pages/editProduct/EditProduct";
 import Category from "./pages/category/Category";
+import UserSignUp from "./pages/UserSignUp/UserSignUp";
+import UserDashboard from "./pages/userDashboard/UserDashboard";
+import Purchases from "./pages/purchases/Purchases";
 let stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 function App() {
   return (
@@ -39,16 +38,15 @@ function App() {
               <Switch>
                 {/* <Route path="/electronics" component={Electronics} exact /> */}
                 <Route path="/category/:category" component={Category} exact />
-                <Route
-                  path="/electronics/:id"
-                  component={ProductDetails}
-                  exact
-                />
+                <Route path="/product/:id" component={ProductDetails} exact />
                 <PrivateRoute path="/cart" exact component={Cart} />
                 <PrivateRoute path="/seller/:id" exact component={AddProduct} />
+                <Route path="/signup" exact component={UserSignUp} />
                 <Route path="/sellerLogin" exact component={SellerLogin} />
                 <Route path="/sellerSignup" exact component={sellerSignUp} />
+                <Route path="/user" exact component={UserDashboard} />
                 <Route path="/mobile" exact component={Mobile} />
+                <Route path="/purchase" exact component={Purchases} />
                 <PrivateRoute
                   path="/editProduct/:productID"
                   exact

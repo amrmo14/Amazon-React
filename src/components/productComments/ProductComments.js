@@ -10,6 +10,7 @@ import { getSeller } from "../../firebase/seller/sellers";
 import { onSnapshot, doc, collection } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import "./productComments.css";
+import { getUserById } from "../../firebase/users/users";
 export default function ProductComments() {
   let pageData = new LocalizedStrings({
     en: {
@@ -32,6 +33,7 @@ export default function ProductComments() {
   let [rateHover, setrateHover] = useState(0);
   let [comment, setComment] = useState("");
   let [comments, setComments] = useState([]);
+  let [user, setUset] = useState({});
   let date = new Date().toLocaleString();
   let starsArr = new Array(5).fill(0);
   let { id } = useParams();
@@ -40,13 +42,13 @@ export default function ProductComments() {
   //HANDLE: use Effect
   useEffect(() => {
     onSnapshot(docRef, (snapshot) => {
+      console.log(snapshot.data());
       setComments(snapshot.data().comments);
     });
   }, []);
 
   let handleCommentChange = (e) => {
     setComment(e.target.value);
-    console.log(comment);
   };
   //START HANDLE: rate
   let handleRateClick = (index) => {
@@ -60,17 +62,37 @@ export default function ProductComments() {
     setrateHover(0);
   };
   let handleAddComment = (prodId) => {
-    getSeller(localStorage.getItem("userId")).then((user) => {
-      addProductComment(prodId, {
-        rate,
-        comment,
-        date,
-        userName: user.name,
-      }).then((snapShot) => {
-        setComment("");
-        setRate(0);
+    if (localStorage.getItem("userId")) {
+      getSeller(localStorage.getItem("userId")).then((user) => {
+        addProductComment(prodId, {
+          rate,
+          comment,
+          date,
+          userName: user.name,
+        }).then((snapShot) => {
+          setComment("");
+          setRate(0);
+        });
       });
-    });
+    } else if (localStorage.getItem("amazon_user")) {
+      getUserById(localStorage.getItem("amazon_user"))
+        .then((user) => {
+          console.log("user");
+          addProductComment(prodId, {
+            rate,
+            comment,
+            date,
+            userName: user.name,
+          }).then((snapShot) => {
+            setComment("");
+            setRate(0);
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+    }
   };
   //END HANDLE: rate
   return (
@@ -111,7 +133,8 @@ export default function ProductComments() {
         )}
 
         {/* HANDLE: add new comment and rating */}
-        {localStorage.getItem("token") ? (
+        {localStorage.getItem("token") ||
+        localStorage.getItem("amazon_user") ? (
           <div className="productComment__commentBox ">
             <div className="productComment__commentRate d-flex align-items-center justify-content-between mb-3">
               <h3>{pageData.rate}</h3>

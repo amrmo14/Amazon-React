@@ -2,14 +2,6 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
-// const firebaseConfig = {
-//   apiKey: "AIzaSyDEHY-O0NAFZm7izVzUGNdMe-ShUEwjuZM",
-//   authDomain: "clone-7d40c.firebaseapp.com",
-//   projectId: "clone-7d40c",
-//   storageBucket: "clone-7d40c.appspot.com",
-//   messagingSenderId: "501685416287",
-//   appId: "1:501685416287:web:533ef5f7279cf178d2c6ea",
-// };
 
 const firebaseConfig = {
   apiKey: "AIzaSyCpz7N83mSb4Rop6a6WvgVb3DZo8bCcZ8E",
